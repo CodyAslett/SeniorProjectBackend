@@ -1,0 +1,9 @@
+{
+  "name": "senior-project-backend",
+  "version": "0.0.0",
+  "description": "seniorProjectBackend",
+  "main": "app.js",
+  "author": {
+    "name": ""
+  }
+}
