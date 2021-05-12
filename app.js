@@ -10,7 +10,7 @@ var app = express()
 
 
 const server = http.createServer(function (req, res) {
-    res.write('Hello Node')
+    res.write('You found Cody Aslett\'s syncing Audiobook Player Backend')
     console.log('Http Request : ' + toString(req))
     res.end()
 })
