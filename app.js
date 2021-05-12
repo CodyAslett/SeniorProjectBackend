@@ -3,7 +3,7 @@
 console.log('server Starting');
 
 const http = require('http')
-const port = 80
+const port = 3000
 
 var express = require('express')
 var app = express()
