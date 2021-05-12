@@ -3,7 +3,7 @@
 console.log('server Starting');
 
 const http = require('http')
-const port = 3000
+const port = 80
 
 var express = require('express')
 var app = express()
@@ -11,6 +11,7 @@ var app = express()
 
 const server = http.createServer(function (req, res) {
     res.write('Hello Node')
+    console.log('Http Request : ' + toString(req))
     res.end()
 })
 
@@ -27,4 +28,5 @@ server.listen(port, function (error) {
 // respond with "hello world" when a GET request is made to the homepage
 app.get('/', function (req, res) {
     res.send('hello world. test worked')
+    console.log('Get Requested')
 })
