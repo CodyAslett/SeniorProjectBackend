@@ -3,7 +3,21 @@
   "version": "0.0.0",
   "description": "seniorProjectBackend",
   "main": "app.js",
-  "author": {
-    "name": ""
+  "author": "Cody Aslett",
+  "scripts": {
+    "test": " "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CodyAshtonAslett/seniorProjectBackend.git"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CodyAshtonAslett/seniorProjectBackend/issues"
+  },
+  "homepage": "https://github.com/CodyAshtonAslett/seniorProjectBackend#readme",
+  "dependencies": {
+    "express": "^4.17.1"
   }
 }
