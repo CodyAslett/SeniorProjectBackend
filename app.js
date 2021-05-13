@@ -3,10 +3,15 @@
 console.log('server Starting');
 
 //const http = require('http')
-const port = 3000
+const port = 3000;
 
-var express = require('express')
-var app = express()
+var express = require('express');
+var app = express();
+var https = require('https');
+var fs = requrie('fs');
+var https_options = {
+    key: fs.r
+}
 
 /*
 const server = http.createServer(function (req, res) {

@@ -29,10 +29,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="app.js" />
-    <Content Include="ca_bundle.crt" />
-    <Content Include="certificate.crt" />
     <Content Include="package.json" />
-    <Content Include="private.key" />
     <Content Include="README.md" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
