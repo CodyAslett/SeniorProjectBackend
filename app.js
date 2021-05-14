@@ -27,6 +27,7 @@ const pool = new Pool({
     port: pgPort,
     user: 'remotetesting',
     password: pass,
+    database: 'syncaudiobookplayerbackenddb',
     max: 20,
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 20000,
