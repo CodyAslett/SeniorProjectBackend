@@ -3,7 +3,7 @@
 console.log('Server Starting');
 
 const apiPort = 3000;
-const webPort = 80;
+
 //var publicDirPath = path.join(__dirname + '/public');
 
 
@@ -11,35 +11,35 @@ const webPort = 80;
 var express = require('express');
 var session = require('express-session')
 var bodyParser = require('body-parser')
+const { Client } = require('pg')
 
 
 var app = express();
 var web = express();
+const client = new Client({
+    user:
+});
+client.connect()
 
+client.query('SELECT $1::text as message', ['Hello world!'], (err, res) => {
+    console.log(err ? err.stack : res.rows[0].message) // Hello World!
+    client.end()
+})
 
-var sess = {
-    secret: 'auto',
-    cookie: {}
-}
-if (web.get('env') === 'production') {
-    web.set('trust proxy', 1) //trust first proxy
-    sess.cookie.secure = true //serve secure cookies
-}
-web.use(session(sess));
+/////////////////////////////////////////////////////////////////////
+// Error Responses
+/////////////////////////////////////////////////////////////////////
 
-web.set('port', (process.env.PORT || webPort))
 //web.use(express.static(__dirname + '/public'));
 web.use(express.static(__dirname + '/public', { extensions: ['html'] }));
 web.set('views', __dirname + '/public/views');
 web.engine('html', require('ejs').renderFile);
 web.set('view engine', 'html');
 
+//postgress
 
-web.use(bodyParser.urlencoded({
-    extended: true
-}));
 
-web.use(bodyParser.json());
+
 /*
 const server = http.createServer(function (req, res) {
     res.write('You found Cody Aslett\'s syncing Audiobook Player Backend')
@@ -56,12 +56,6 @@ server.listen(webPort, function (error) {
     }
 })
 */
-
-// respond with "hello world" when a GET request is made to the homepage
-web.get('/', function (request, response) {
-    console.log('pages/index' + request.url + " Request");
-    response.render('index.html');
-});
 
 // respond with "hello world" when a GET request is made to the homepage
 app.get('/', function (req, res) {
@@ -86,6 +80,3 @@ app.listen(apiPort, () => {
     console.log('Example app listening on port : ' + apiPort)
 })
 
-web.listen(webPort, () => {
-    console.log('Example app listening on port : ' + webPort)
-})
