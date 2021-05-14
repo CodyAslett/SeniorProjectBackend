@@ -22,7 +22,6 @@ pass = fs.readFileSync('../pass.txt', 'utf8', function (err, data) {
     }
     return data;   
 });
-
 const pool = new Pool({
     host: fixedIP,
     port: pgPort,
