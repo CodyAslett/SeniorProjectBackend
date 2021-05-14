@@ -30,7 +30,18 @@
   <ItemGroup>
     <Content Include="app.js" />
     <Content Include="package.json" />
+    <Content Include="public\index.html" />
+    <Content Include="public\stylesheets\style.css" />
+    <Content Include="public\test.html">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="public\" />
+    <Folder Include="public\images\" />
+    <Folder Include="public\javascripts\" />
+    <Folder Include="public\stylesheets\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
 </Project>
