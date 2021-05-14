@@ -27,6 +27,7 @@ const pool = new Pool({
     host: fixedIP,
     port: pgPort,
     user: 'postgres',
+    password: pass,
     max: 20,
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 20000,
