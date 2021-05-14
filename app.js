@@ -3,47 +3,56 @@
 console.log('Server Starting');
 
 const apiPort = 3000;
-
-//var publicDirPath = path.join(__dirname + '/public');
-
+const pgPort = 5432;
+const fixedIP = 'localhost';
 
 
 var express = require('express');
-var session = require('express-session')
-var bodyParser = require('body-parser')
-const { Client } = require('pg')
+var session = require('express-session');
+var bodyParser = require('body-parser');
+var fs = require('fs');
+const { Pool } = require('pg');
+const { cache } = require('ejs');
+var pass;
+
+pass = fs.readFileSync('../pass.txt', 'utf8', function (err, data) {
+    if (err)
+    {
+        return console.log(err);
+    }
+    return data;   
+});
+
+const pool = new Pool({
+    host: fixedIP,
+    port: pgPort,
+    user: 'postgres',
+    max: 20,
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 20000,
+});
+
+pool.connect((err, client, release) => {
+    if (err) {
+        return console.error('Error acquiring client', err.stack)
+    }
+    client.query('SELECT NOW()', (err, result) => {
+        release();
+        if (err) {
+            return console.error('Error executing query', err.stack);
+        }
+        console.log(result.rows);
+    })
+});
+
+
+
 
 
 var app = express();
 
-const client = new Client({
-    user:
-});
-client.connect()
 
-client.query('SELECT $1::text as message', ['Hello world!'], (err, res) => {
-    console.log(err ? err.stack : res.rows[0].message) // Hello World!
-    client.end()
-})
-
-/*
-const server = http.createServer(function (req, res) {
-    res.write('You found Cody Aslett\'s syncing Audiobook Player Backend')
-    console.log('Http Request : ' + Json.stringify(req.headers))
-    res.end()
-})
-
-
-server.listen(webPort, function (error) {
-    if (error) {
-        console.log('Something went wrong', error)
-    } else {
-        console.log('Server is listening on port ' + webPort)
-    }
-})
-*/
-
-// respond with "hello world" when a GET request is made to the homepage
+// respond to a GET requests
 app.get('/', function (req, res) {
     res.send('Thank you for your API request to get : ' + JSON.stringify(req.body))
     console.log('Get Requested : ' + JSON.stringify(req.headers))
@@ -55,4 +64,3 @@ app.get('/', function (req, res) {
 app.listen(apiPort, () => {
     console.log('Example app listening on port : ' + apiPort)
 })
-
