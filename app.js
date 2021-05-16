@@ -14,8 +14,8 @@ const apiPort = 3000;
 const pgPort = 5432;
 const dbName = 'syncaudiobookplayerbackenddb';
 const dbUser = 'remotetesting';
-//const fixedIP = '54.185.209.208';
-const fixedIP = 'localhost'
+const fixedIP = '54.185.209.208';
+//const fixedIP = 'localhost'
 var pass;
 
 pass = fs.readFileSync('../pass.txt', 'utf8', function (err, data) {
