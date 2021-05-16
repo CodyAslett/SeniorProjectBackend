@@ -11,9 +11,10 @@ const hat = require('hat');
 const { Pool } = require('pg');
 
 const apiPort = 3000;
-const pgPort = 5432;
+const pgPort = 32;
 const dbName = 'syncaudiobookplayerbackenddb';
-const fixedIP = '54.185.209.208';
+const dbUser = 'remotetesting';
+const fixedIP = '127.0.0.1';
 var pass;
 
 pass = fs.readFileSync('../pass.txt', 'utf8', function (err, data) {
@@ -27,7 +28,7 @@ console.log
 const pool = new Pool({
     host: fixedIP,
     port: pgPort,
-    user: 'remotetesting',
+    user: dbUser,
     password: pass,
     database: dbName,
     max: 20,
