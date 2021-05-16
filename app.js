@@ -11,10 +11,11 @@ const hat = require('hat');
 const { Pool } = require('pg');
 
 const apiPort = 3000;
-const pgPort = 32;
+const pgPort = 5432;
 const dbName = 'syncaudiobookplayerbackenddb';
 const dbUser = 'remotetesting';
-const fixedIP = '127.0.0.1';
+//const fixedIP = '54.185.209.208';
+const fixedIP = 'localhost'
 var pass;
 
 pass = fs.readFileSync('../pass.txt', 'utf8', function (err, data) {
@@ -25,6 +26,7 @@ pass = fs.readFileSync('../pass.txt', 'utf8', function (err, data) {
     return data;    
 });
 console.log
+/*
 const pool = new Pool({
     host: fixedIP,
     port: pgPort,
@@ -35,6 +37,9 @@ const pool = new Pool({
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 20000,
 });
+*/
+const pool = new Pool();
+
 
 // boot db test
 pool.connect((err, client, release) => {
