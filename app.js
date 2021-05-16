@@ -42,7 +42,7 @@ const pool = new Pool({
 // boot db test
 pool.connect((err, client, release) => {
     if (err) {
-        return console.error('Error acquiring client', err.stack)
+        return console.error('Error acquiring client', JSON.stringify(pool) , err.stack)
     }
     client.query('SELECT NOW()', (err, result) => {
         release();
