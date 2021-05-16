@@ -37,8 +37,10 @@ const pool = new Pool({
     connectionTimeoutMillis: 20000,
 });
 
+// boot db test
 pool.connect((err, client, release) => {
     if (err) {
+        console.log("FAILED to login into syncaudiobookplayerbackenddb : " + pass)
         return console.error('Error acquiring client', err.stack)
     }
     client.query('SELECT NOW()', (err, result) => {
