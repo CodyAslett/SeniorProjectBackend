@@ -28,17 +28,15 @@ pass = fs.readFileSync('../pass.txt', 'utf8', function (err, data) {
 console.log
 
 const pool = new Pool({
-    //host: fixedIP,
+    host: '54.185.209.208',
     //port: pgPort,
-    user: dbUser,
+    user: 'remotetesting',
     password: pass,
-    database: dbName,
+    database: 'syncaudiobookplayerbackenddb',
     //max: 20,
     //idleTimeoutMillis: 30000,
     //connectionTimeoutMillis: 20000,
 });
-
-//const pool = new Pool();
 
 
 // boot db test
