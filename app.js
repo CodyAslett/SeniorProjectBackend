@@ -4,8 +4,8 @@ console.log('Server Starting');
 
 const apiPort = 3000;
 const pgPort = 5432;
-//const fixedIP = '54.185.209.208';
-const fixedIP = 'localhost';
+const fixedIP = '54.185.209.208';
+
 
 
 var express = require('express');
