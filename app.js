@@ -26,19 +26,19 @@ pass = fs.readFileSync('../pass.txt', 'utf8', function (err, data) {
     return data;    
 });
 console.log
-/*
+
 const pool = new Pool({
-    host: fixedIP,
-    port: pgPort,
+    //host: fixedIP,
+    //port: pgPort,
     user: dbUser,
     password: pass,
     database: dbName,
-    max: 20,
-    idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 20000,
+    //max: 20,
+    //idleTimeoutMillis: 30000,
+    //connectionTimeoutMillis: 20000,
 });
-*/
-const pool = new Pool();
+
+//const pool = new Pool();
 
 
 // boot db test
