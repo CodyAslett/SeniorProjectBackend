@@ -4,7 +4,8 @@ console.log('Server Starting');
 
 const apiPort = 3000;
 const pgPort = 5432;
-const fixedIP = '54.185.209.208';
+//const fixedIP = '54.185.209.208';
+const fixedIP = 'localhost';
 
 
 var express = require('express');
@@ -40,7 +41,6 @@ const pool = new Pool({
 // boot db test
 pool.connect((err, client, release) => {
     if (err) {
-        console.log("FAILED to login into syncaudiobookplayerbackenddb : " + pass)
         return console.error('Error acquiring client', err.stack)
     }
     client.query('SELECT NOW()', (err, result) => {
