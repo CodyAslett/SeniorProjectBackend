@@ -14,7 +14,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>a8e0712b-2c65-420a-ad5f-3dd25a79a3d8</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile> app.js</StartupFile>
+    <StartupFile>app.js</StartupFile>
     <StartWebBrowser>False</StartWebBrowser>
     <SearchPath>
     </SearchPath>

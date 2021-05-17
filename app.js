@@ -6,7 +6,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var fs = require('fs');
 const url = require('url');
-//const ip = require('ip');
+const ip = require('ip');
 const hat = require('hat');
 const { Pool } = require('pg');
 
