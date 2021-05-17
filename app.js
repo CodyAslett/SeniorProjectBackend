@@ -6,9 +6,17 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var fs = require('fs');
 const url = require('url');
-const ip = require('ip');
+//const ip = require('ip');
 const hat = require('hat');
 const { Pool } = require('pg');
+
+//const { networkInterfaces } = require('os');
+
+//const thenetworkInterfaces = os.networkInterfaces();
+//const network = thenetworkInterfaces['Local Area Connection 3'];
+//const theIP = arr[1].address;
+
+//console.log(theIP);
 
 const apiPort = 3000;
 const pgPort = 5432;
@@ -25,32 +33,40 @@ pass = fs.readFileSync('../pass.txt', 'utf8', function (err, data) {
     }
     return data;    
 });
-console.log
+
 
 const pool = new Pool({
-    host: '54.185.209.208',
-    //port: pgPort,
-    user: 'remotetesting',
+    host: fixedIP,
+    port: pgPort,
+    user: dbUser,
     password: pass,
     database: 'syncaudiobookplayerbackenddb',
-    //max: 20,
-    //idleTimeoutMillis: 30000,
-    //connectionTimeoutMillis: 20000,
+    max: 20,
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 20000,
 });
 
+console.log('Pool :', JSON.stringify(pool));
 
 // boot db test
 pool.connect((err, client, release) => {
     if (err) {
-        return console.error('Error acquiring client', JSON.stringify(pool), pass , err.stack)
+        return console.error('Error acquiring client', JSON.stringify(pool), pass, err.stack, err.message)
     }
     client.query('SELECT NOW()', (err, result) => {
-        release();
         if (err) {
             return console.error('Error executing query', err.stack);
         }
         console.log(result.rows);
     });
+    client.query('SELECT COUNT(*) FROM users', (err, result) => {
+        if (err) {
+            return console.error('Error executing query', err.stack);
+        }
+        console.log('Users found : ', result.rows[0]['count']);
+    });
+
+    release();
 });
 
 
