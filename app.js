@@ -129,7 +129,7 @@ app.get('/login', function (request, response) {
         });
     });
     var queryPass = dbRequest;
-    response.send(202, 'login atempt : ' + JSON.stringify(dbRequest));
+    response.send(202, 'login atempt : ' + JSON.stringify(result.rows[0]));
     console.log('user : ' + user + '   ' + queryPass);
 });
 
