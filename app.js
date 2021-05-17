@@ -1,6 +1,6 @@
 'use strict';
 
-console.log('Server Starting');
+console.log('Server Starting : ', process.env);
 
 var express = require('express');
 var bodyParser = require('body-parser');
@@ -24,9 +24,9 @@ const dbName = 'syncaudiobookplayerbackenddb';
 const dbUser = 'remotetesting';
 const fixedIP = '54.185.209.208';
 //const fixedIP = 'localhost'
-var pass;
+var dbPass;
 
-pass = fs.readFileSync('../pass.txt', 'utf8', function (err, data) {
+dbPass = fs.readFileSync('../pass.txt', 'utf8', function (err, data) {
     if (err)
     {
         return console.log(err);
@@ -34,24 +34,38 @@ pass = fs.readFileSync('../pass.txt', 'utf8', function (err, data) {
     return data;    
 });
 
+var pgConfig = {
+    host: fixedIP,
+    port: pgPort,
+    user: dbUser,
+    password: dbPass,
+    database: dbName,
+    max: 20,
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 20000,
+};
 
+/*
 const pool = new Pool({
     host: fixedIP,
     port: pgPort,
     user: dbUser,
-    password: pass,
-    database: 'syncaudiobookplayerbackenddb',
+    password: dbPass,
+    database: dbName,
     max: 20,
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 20000,
 });
+*/
+//const pool = new Pool(pgConfig);
+const pool = new Pool();
 
 console.log('Pool :', JSON.stringify(pool));
 
 // boot db test
 pool.connect((err, client, release) => {
     if (err) {
-        return console.error('Error acquiring client', JSON.stringify(pool), pass, err.stack, err.message)
+        return console.error('Error acquiring client', JSON.stringify(pool), err.stack, err.message)
     }
     client.query('SELECT NOW()', (err, result) => {
         if (err) {
