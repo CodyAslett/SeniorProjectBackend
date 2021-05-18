@@ -43,7 +43,7 @@ web.get('/', function (request, response) {
 /////////////////////////////////////////////////////////////////////
 // BAD URL // 404 ERROR respons
 web.get('*', function (req, res) {
-    console.log('BAD 404 Request for ' + req.url + '& From : ' + JSON.stringify(req));
+    console.log('BAD 404 Request for ' + req.url + '& From : ' + req.ip);
     res.send("Say Whay??", 404);
 });
 
