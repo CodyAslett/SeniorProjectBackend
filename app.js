@@ -9,6 +9,7 @@ const url = require('url');
 const ip = require('ip');
 const hat = require('hat');
 const { Pool } = require('pg');
+const { token } = require('morgan');
 
 //const { networkInterfaces } = require('os');
 
@@ -96,6 +97,7 @@ app.get('/login', function (request, response) {
     const queryObject = url.parse(request.url, true).query;
     var user = JSON.stringify(queryObject["username"]).replace(/"/g, "");
     var pass = JSON.stringify(queryObject["password"]).replace(/"/g, "");
+    var token = hat();
     
     var dbRequest;
     pool.connect((err, client, release) => {
@@ -112,10 +114,10 @@ app.get('/login', function (request, response) {
             if (pass === result.rows[0]['password']) {
                 console.log('loginSucess for ' + user);
                 dbRequest = result.rows[0];
-                var token = hat();
+//                var token = hat();
                 var tokenPost = "INSERT INTO tokens(username, token, ip) VALUES ('" + user + "', '" + token + "', '" + ip.address() + "')";
                 console.log('sending ' + tokenPost);
-                client.query(tokenPost, (err, result) => {
+                client.query(tokenPost, (err, resultToken) => {
                     release();
                     if (err) {
                         return console.error('Error executing query', err.stack);
@@ -129,7 +131,7 @@ app.get('/login', function (request, response) {
         });
     });
     var queryPass = dbRequest;
-    response.send(202, 'login atempt : ' + JSON.stringify(result.rows[0]));
+    response.send(token);
     console.log('user : ' + user + '   ' + queryPass);
 });
 
