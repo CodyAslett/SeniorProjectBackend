@@ -96,47 +96,57 @@ app.get('/login', function (request, response) {
     try {
         //response.send('login atemped : ' + request.url);
         const queryObject = url.parse(request.url, true).query;
-        var user = JSON.stringify(queryObject["username"]).replace(/"/g, "");
-        var pass = JSON.stringify(queryObject["password"]).replace(/"/g, "");
         var token = hat();
-
         var dbRequest;
-        pool.connect((err, client, release) => {
-            if (err) {
-                return console.error('Error acquiring client', err.stack)
-            }
-            var query = "SELECT * FROM users WHERE name = '" + user + "'";
-            console.log('quering : ' + query + '& FROM : ' + JSON.stringify(request.header('x-forwarded-for')));
-            client.query(query, (err, result) => {
-                // release();
-                if (err) {
-                    return console.error('Error executing query', err.stack);
-                }
-                if (pass === result.rows[0]['password']) {
-                    console.log('loginSucess for ' + user);
-                    dbRequest = result.rows[0];
-                    //                var token = hat();
-                    var tokenPost = "INSERT INTO tokens(username, token, ip) VALUES ('" + user + "', '" + token + "', '" + ip.address() + "')";
-                    console.log('sending ' + tokenPost);
-                    client.query(tokenPost, (err, resultToken) => {
-                        release();
+
+        if (queryObject["username"] !== 'undefined' && queryObject["username"] !== null) {
+            var user = JSON.stringify(queryObject["username"]).replace(/"/g, "");
+            if (queryObject["password"] !== 'undefined' && queryObject["password"] !== null) {
+                var pass = JSON.stringify(queryObject["password"]).replace(/"/g, "");
+
+
+                pool.connect((err, client, release) => {
+                    if (err) {
+                        return console.error('Error acquiring client', err.stack)
+                    }
+                    var query = "SELECT * FROM users WHERE name = '" + user + "'";
+                    console.log('quering : ' + query + '& FROM : ' + JSON.stringify(request.header('x-forwarded-for')));
+                    client.query(query, (err, result) => {
+                        // release();
                         if (err) {
                             return console.error('Error executing query', err.stack);
                         }
-                        console.log("sent tokent to db");
-                    });
-                }
-                else
-                    console.log(result.rows[0]['password'] + '!=' + pass);
+                        if (pass === result.rows[0]['password']) {
+                            console.log('loginSucess for ' + user);
+                            dbRequest = result.rows[0];
+                            //                var token = hat();
+                            var tokenPost = "INSERT INTO tokens(username, token, ip) VALUES ('" + user + "', '" + token + "', '" + ip.address() + "')";
+                            console.log('sending ' + tokenPost);
+                            client.query(tokenPost, (err, resultToken) => {
+                                release();
+                                if (err) {
+                                    return console.error('Error executing query', err.stack);
+                                }
+                                console.log("sent tokent to db");
+                            });
+                        }
+                        else
+                            console.log(result.rows[0]['password'] + '!=' + pass);
 
-            });
-        });
-        var queryPass = dbRequest;
-        response.send(token);
-        console.log('user : ' + user + '   ' + queryPass);
+
+                        var queryPass = dbRequest;
+                        response.send(token);
+                        console.log('user : ' + user + '   ' + queryPass);
+                    });
+                });
+            }
+        }
+        else {
+            response.send('DENIED');
+        }
     }
     catch (err) {
-        response.send('Bad Request');
+        response.send('ERROR: Bad login Request');
     }
 });
 
