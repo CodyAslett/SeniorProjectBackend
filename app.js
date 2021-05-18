@@ -109,8 +109,8 @@ app.get('/login', function (request, response) {
                     if (err) {
                         return console.error('Error acquiring client', err.stack)
                     }
-                    var query = "SELECT * FROM users WHERE name = '" + user + "'";
-                    console.log('quering : ' + query + '& FROM : ' + JSON.stringify(request.header('x-forwarded-for')));
+                    var query = "SELECT (password) FROM users WHERE name = '" + user + "'";
+                    console.log('quering : ' + query + '& FROM : ' + request.connection.remoteAddress);
                     client.query(query, (err, result) => {
                         // release();
                         if (err) {
@@ -119,7 +119,6 @@ app.get('/login', function (request, response) {
                         if (pass === result.rows[0]['password']) {
                             console.log('loginSucess for ' + user);
                             dbRequest = result.rows[0];
-                            //                var token = hat();
                             var tokenPost = "INSERT INTO tokens(username, token, ip) VALUES ('" + user + "', '" + token + "', '" + ip.address() + "')";
                             console.log('sending ' + tokenPost);
                             client.query(tokenPost, (err, resultToken) => {
@@ -130,8 +129,11 @@ app.get('/login', function (request, response) {
                                 console.log("sent tokent to db");
                             });
                         }
-                        else
+                        else {
                             console.log(result.rows[0]['password'] + '!=' + pass);
+                            response.send('DENIED: PROVIDED USERNAM AND PASSWORD DON\'t MATCH RECORDS');
+                            return;
+                        }
 
 
                         var queryPass = dbRequest;
