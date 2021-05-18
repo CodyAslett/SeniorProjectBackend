@@ -46,7 +46,7 @@ var pgConfig = {
     connectionTimeoutMillis: 20000,
 };
 
-/*
+
 const pool = new Pool({
     host: fixedIP,
     port: pgPort,
@@ -57,9 +57,9 @@ const pool = new Pool({
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 20000,
 });
-*/
+
 //const pool = new Pool(pgConfig);
-const pool = new Pool();
+//const pool = new Pool();
 
 console.log('Pool :', JSON.stringify(pool));
 
@@ -98,16 +98,65 @@ app.get('/login', function (request, response) {
         const queryObject = url.parse(request.url, true).query;
         var token = hat();
         var dbRequest;
+        var tokenResult;
 
-        if (queryObject["username"] !== 'undefined' && queryObject["username"] !== null) {
+
+        if (queryObject["token"] !== undefined && queryObject["token"] !== null) {
+            pool.connect((err, client, release) =>
+            {
+                if (err)
+                {
+                    return console.error('Error acquiring token client', err.stack)
+                }
+
+                var userGivenToken = JSON.stringify(queryObject["token"]).replace(/"/g, "");
+                var query = "SELECT (username, token) FROM tokens WHERE token = '" + userGivenToken + "'";
+
+                console.log('making dbRequest : ' + query);
+
+                client.query(query, (err, result) =>
+                {
+                    if (err)
+                    {
+                        return console.error('Error executing token query', err.stack);
+                    }
+                    tokenResult = ((result.rows[0]['row']).replace(/\)|\(/g, "")).split(',');
+                    var dbToken = tokenResult[1];
+                    var dbUser = tokenResult[0];
+                    var user;
+
+                    console.log(typeof (dbToken));
+
+                    console.log('DB request result : ' + dbToken);
+                    if (queryObject["username"] !== undefined && queryObject["username"] !== null) {
+                        user = JSON.stringify(queryObject["username"]).replace(/"/g, "");
+                    }
+
+                    if (dbToken === userGivenToken && user === dbUser) {
+                        console.log('token match ' + userGivenToken)
+                        response.send('ACCEPTED');
+                        return;
+                    }
+                    else {
+                        console.log('Token Mismatch : ' + dbToken + ' != ' + userGivenToken);
+                        respond.send('DENIED');
+                        return;
+                    }
+                });
+            });
+        }
+
+
+
+
+        if (queryObject["username"] !== undefined && queryObject["username"] !== null) {
             var user = JSON.stringify(queryObject["username"]).replace(/"/g, "");
-            if (queryObject["password"] !== 'undefined' && queryObject["password"] !== null) {
+            if (queryObject["password"] !== undefined && queryObject["password"] !== null) {
                 var pass = JSON.stringify(queryObject["password"]).replace(/"/g, "");
-
 
                 pool.connect((err, client, release) => {
                     if (err) {
-                        return console.error('Error acquiring client', err.stack)
+                        return console.error('Error acquiring user client', err.stack)
                     }
                     var query = "SELECT (password) FROM users WHERE name = '" + user + "'";
                     console.log('quering : ' + query + '& FROM : ' + request.connection.remoteAddress);
@@ -137,7 +186,7 @@ app.get('/login', function (request, response) {
 
 
                         var queryPass = dbRequest;
-                        response.send(token);
+                        response.send('ACCEPTED: ' + token);
                         console.log('user : ' + user + '   ' + queryPass);
                     });
                 });
@@ -148,7 +197,7 @@ app.get('/login', function (request, response) {
         }
     }
     catch (err) {
-        response.send('ERROR: Bad login Request');
+        response.send('ERROR: Bad login Request ' + err.stack);
     }
 });
 

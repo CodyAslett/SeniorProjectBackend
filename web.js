@@ -4,7 +4,8 @@ const webPort = 80;
 
 var express = require('express');
 var session = require('express-session')
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
+const { json } = require('body-parser');
 
 var web = express();
 
@@ -42,7 +43,7 @@ web.get('/', function (request, response) {
 /////////////////////////////////////////////////////////////////////
 // BAD URL // 404 ERROR respons
 web.get('*', function (req, res) {
-    console.log('BAD 404 Request for ' + req.url);
+    console.log('BAD 404 Request for ' + req.url + '& From : ' + JSON.stringify(req));
     res.send("Say Whay??", 404);
 });
 
