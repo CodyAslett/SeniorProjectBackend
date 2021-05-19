@@ -165,6 +165,7 @@ app.get('/login', function (request, response) {
                         if (err) {
                             return console.error('Error executing query', err.stack);
                         }
+                        console.log('Result ' + result);
                         if (pass === result.rows[0]['password']) {
                             console.log('loginSucess for ' + user);
                             dbRequest = result.rows[0];
