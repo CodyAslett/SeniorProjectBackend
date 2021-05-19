@@ -46,7 +46,7 @@ var pgConfig = {
     connectionTimeoutMillis: 20000,
 };
 
-
+/*
 const pool = new Pool({
     host: fixedIP,
     port: pgPort,
@@ -57,9 +57,9 @@ const pool = new Pool({
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 20000,
 });
-
+*/
 //const pool = new Pool(pgConfig);
-//const pool = new Pool();
+const pool = new Pool();
 
 console.log('Pool :', JSON.stringify(pool));
 
