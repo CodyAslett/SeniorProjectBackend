@@ -12,16 +12,6 @@ const { Pool } = require('pg');
 
 const apiPort = 3000;
 
-
-dbPass = fs.readFileSync('../pass.txt', 'utf8', function (err, data)
-{
-   if (err)
-   {
-      return console.log(err);
-   }
-   return data;
-});
-
 const pool = new Pool();
 
 console.log('Pool :', JSON.stringify(pool));
