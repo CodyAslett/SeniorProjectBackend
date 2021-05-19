@@ -166,24 +166,37 @@ app.get('/login', function (request, response) {
                             return console.error('Error executing query', err.stack);
                         }
                         console.log('Result ' + JSON.stringify(result));
-                        if (pass === result.rows[0]['password']) {
-                            console.log('loginSucess for ' + user);
-                            dbRequest = result.rows[0];
-                            var tokenPost = "INSERT INTO tokens(username, token, ip) VALUES ('" + user + "', '" + token + "', '" + ip.address() + "')";
-                            console.log('sending ' + tokenPost);
-                            client.query(tokenPost, (err, resultToken) => {
+                       if (result.rows.length > 0)
+                       {
+                          if (pass === result.rows[0]['password'])
+                          {
+                             console.log('loginSucess for ' + user);
+                             dbRequest = result.rows[0];
+                             var tokenPost = "INSERT INTO tokens(username, token, ip) VALUES ('" + user + "', '" + token + "', '" + ip.address() + "')";
+                             console.log('sending ' + tokenPost);
+                             client.query(tokenPost, (err, resultToken) => 
+                             {
                                 release();
-                                if (err) {
-                                    return console.error('Error executing query', err.stack);
+                                if (err) 
+                                {
+                                   return console.error('Error executing query', err.stack);
                                 }
                                 console.log("sent tokent to db");
-                            });
-                        }
-                        else {
-                            console.log(result.rows[0]['password'] + '!=' + pass);
-                            response.send('DENIED: PROVIDED USERNAM AND PASSWORD DON\'t MATCH RECORDS');
-                            return;
-                        }
+                             });
+                          }
+                          else 
+                          {
+                             console.log(result.rows[0]['password'] + '!=' + pass);
+                             response.send('DENIED: PROVIDED USERNAM AND PASSWORD DON\'t MATCH RECORDS');
+                             return;
+                          }
+                       }
+                       else
+                       {
+                          console.log('ERROR : DB requestresult empty :' + result);
+                          response.send('DENIED: PROVIDED USERNAM AND PASSWORD DON\'t MATCH RECORDS');
+                          return;
+                       }
 
 
                         var queryPass = dbRequest;
@@ -193,11 +206,13 @@ app.get('/login', function (request, response) {
                 });
             }
         }
-        else {
+        else 
+        {
             response.send('DENIED');
         }
     }
-    catch (err) {
+    catch (err) 
+    {
         response.send('ERROR: Bad login Request ' + err.stack);
     }
 });
