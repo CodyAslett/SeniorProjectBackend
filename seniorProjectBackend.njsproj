@@ -39,6 +39,9 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="README.md" />
+    <Content Include="robots.txt">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="tracker.js">
       <SubType>Code</SubType>
     </Content>

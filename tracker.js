@@ -1,4 +1,8 @@
+#!/usr/bin/env node
+
 var Server = require('bittorrent-tracker').Server;
+const express = require('express');
+const app = express();
 var port = 8000;
 
 var server = new Server({
@@ -28,11 +32,13 @@ server.on('warning', function (err)
 
 server.on('listening', function ()
 {
-   console.log('tracker server is listening on port : ' + port);
+   // fired when all requested servers are listening
+   console.log('listening on http port:' + server.http.address().port);
+   console.log('listening on udp port:' + server.udp.address().port);
 })
 
 // start tracker server listening!
-server.listen(port);
+//server.listen(port);
 
 // listen for individual tracker messages from peers:
 
@@ -60,3 +66,10 @@ console.log(Object.keys(server.torrents))
 
 // get info hashes for all torrents in the tracker server
 Object.keys(server.torrents)
+
+
+const onHttpRequest = server.onHttpRequest.bind(server)
+app.get('/announce', onHttpRequest)
+app.get('/scrape', onHttpRequest)
+
+app.listen(port)
