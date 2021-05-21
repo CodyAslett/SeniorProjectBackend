@@ -32,7 +32,7 @@ server.listen(port)
 server.on('start', function (addr, params)
 {
    console.log('got start message from ' + addr)
-   console.log('params in the message: ' + params)
+   //console.log('params in the message: ' + params)
 })
 
 server.on('complete', function (addr, params) { })
