@@ -39,6 +39,14 @@ pool.connect((err, client, release) =>
       }
       console.log('Users found : ', result.rows[0]['count']);
    });
+   client.query('SELECT COUNT(*) FROM tokens', (err, result) =>
+   {
+      if (err)
+      {
+         return console.error('Error executing query', err.stack);
+      }
+      console.log('Tokens found : ', result.rows[0]['count']);
+   });
 
    release();
 });
