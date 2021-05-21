@@ -21,7 +21,7 @@ server.on('warning', function (err)
 
 server.on('listening', function ()
 {
-   console.log('tracker server is listening!')
+   console.log('tracker server is listening on port : ' + port)
 })
 
 // start tracker server listening!
@@ -32,7 +32,7 @@ server.listen(port)
 server.on('start', function (addr, params)
 {
    console.log('got start message from ' + addr)
-   console.log('params in the message: ' + JSON.stringify(params))
+   console.log('params in the message: ' + params)
 })
 
 server.on('complete', function (addr, params) { })
