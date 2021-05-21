@@ -1,5 +1,5 @@
-var Server = require('bittorrent-tracker').Server
-var port = 8000
+var Server = require('bt-tracker-server');
+var port = 8000;
 
 var server = new Server({
    udp: true, // enable udp server? [default=true]
