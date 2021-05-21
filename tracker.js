@@ -3,7 +3,9 @@ var port = 8000;
 
 var server = new Server({
    udp: true, // enable udp server? [default=true]
-   http: true // enable http server? [default=true]
+   http: true, // enable http server? [default=true]
+   ws: true,   // enable websocket server? [default=true]
+   stats: true // enable web-based statistics? [default=true]
 })
 
 server.on('error', function (err)
@@ -23,6 +25,12 @@ server.on('listening', function ()
 {
    console.log('tracker server is listening on port : ' + port);
 })
+
+// Internal http, udp, and websocket servers exposed as public properties.
+server.http
+server.udp
+server.ws
+
 
 // start tracker server listening!
 server.listen(port);
@@ -50,3 +58,6 @@ server.on('stop', function (addr, params)
 
 // get info hashes for all torrents in the tracker server
 console.log(Object.keys(server.torrents))
+
+// get info hashes for all torrents in the tracker server
+Object.keys(server.torrents)
