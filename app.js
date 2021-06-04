@@ -212,7 +212,7 @@ app.post('/addfile', function (request, response)
    {
 
    }
-}
+});
 
 
 // respond to a GET requests
@@ -220,7 +220,7 @@ app.get('/', function (req, res)
 {
    res.send('Thank you for your API request to get : ' + JSON.stringify(req.body))
    console.log('Get Requested : ' + JSON.stringify(req.headers))
-})
+});
 
 /////////////////////////////////////////////////////////////////////
 // Start
@@ -228,4 +228,4 @@ app.get('/', function (req, res)
 app.listen(apiPort, () => 
 {
    console.log('Example app listening on port : ' + apiPort)
-})
+});
