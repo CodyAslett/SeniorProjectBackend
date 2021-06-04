@@ -219,7 +219,7 @@ app.post('/addfile', function (request, response)
 app.get('/', function (req, res)
 {
    res.send('Thank you for your API request to get : ' + JSON.stringify(req.body))
-   console.log('Get Requested : ' + JSON.stringify(req.headers))
+   console.log('Get Requested : ' + JSON.stringify(req.headers) + "\n\n" + req.header.arguments + "\n\n" + res.ip + "\n\n\n");
 });
 
 /////////////////////////////////////////////////////////////////////
