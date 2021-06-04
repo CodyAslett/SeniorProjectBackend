@@ -59,6 +59,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 
+
+/********************************************************************
+ * Login
+ ********************************************************************/
 app.get('/login', function (request, response)
 {
    try
@@ -192,6 +196,24 @@ app.get('/login', function (request, response)
       response.send('ERROR: Bad login Request ' + err.stack);
    }
 });
+
+
+
+/********************************************************************
+ * Add File
+ ********************************************************************/
+app.post('/addfile', function (request, response)
+{
+   try
+   {
+
+   }
+   catch (err)
+   {
+
+   }
+}
+
 
 // respond to a GET requests
 app.get('/', function (req, res)
