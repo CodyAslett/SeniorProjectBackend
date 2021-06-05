@@ -2,7 +2,7 @@
 var Client = require('bittorrent-tracker')
 
 port = 8000;
-hostname = codyaslett.com
+hostname = "codyaslett.com";
 
 var requiredOpts = {
    infoHash: new Buffer('012345678901234567890'), // hex string or Buffer
