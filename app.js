@@ -218,8 +218,32 @@ app.post('/addfile', function (request, response)
 // respond to a GET requests
 app.get('/', function (req, res)
 {
-   console.log('Get Requested : ' + JSON.stringify(req.headers) + "\nip:" + JSON.stringify(req.ip) + "\nreq:" + req + "\n APP:" + res.app + "\nHeaders:" + res.headersSent + "\nLocals" + JSON.stringify(res.locals) + "\nget:" + res.get('Content-Type'));
-   res.send('Thank you for your API request to get : ' + JSON.stringify(req.body))
+   var temp = [];
+   var request = JSON.stringify(req, (key, value) =>
+   {
+      if (typeof value === 'object' && value !== null)
+      {
+         if (temp.includes(value))
+            return;
+         temp.push(value);
+      }
+      return value;
+   });
+   temp = null;
+   temp = [];
+   var response = JSON.stringify(res, (key, value) =>
+   {
+      if (typeof value === 'object' && value !== null)
+      {
+         if (temp.includes(value))
+            return;
+         temp.push(value);
+      }
+      return value;
+   });
+   temp = null;
+   console.log('\nGet Requested : ' + JSON.stringify(req.headers) + "\nip:" + JSON.stringify(req.ip) + "\nrequest:" + request + "\nresponse:" + response + "\n");
+   res.send('Thank you for your API request : ' + request + "\n\n\n" + "response :" + response);
 
 });
 
