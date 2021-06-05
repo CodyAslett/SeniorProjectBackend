@@ -218,11 +218,9 @@ app.post('/addfile', function (request, response)
 // respond to a GET requests
 app.get('/', function (req, res)
 {
+   console.log('Get Requested : ' + JSON.stringify(req.headers) + "\nreq:" + JSON.stringify(req) + "\n APP:" + res.app + "\nHeaders:" + res.headersSent + "\nLocals" + JSON.stringify(res.locals) + "\nget:" + res.get('Content-Type'));
    res.send('Thank you for your API request to get : ' + JSON.stringify(req.body))
 
-   var cache = [];
-
-   console.log('Get Requested : ' + JSON.stringify(req.headers) + "\n APP:" + res.app + "\nHeaders:" + res.headersSent + "\nLocals" + JSON.stringify(res.locals) + "\nget:" + res.get('Content-Type'));
 });
 
 /////////////////////////////////////////////////////////////////////
