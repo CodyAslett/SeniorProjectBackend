@@ -3,7 +3,7 @@
 
 
 
-const Server = Server
+const Server = require ('server.js');
 const express = require('express')
 const app = express()
 
