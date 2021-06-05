@@ -219,7 +219,19 @@ app.post('/addfile', function (request, response)
 app.get('/', function (req, res)
 {
    res.send('Thank you for your API request to get : ' + JSON.stringify(req.body))
-   console.log('Get Requested : ' + JSON.stringify(req.headers) + "\n" + res + "\n\n" + res.socket.remoteAddress + ":" + res.socket.remotePort + "\n\n\n");
+
+   var cache = [];
+   var response = JSON.stringify(res, (key, value) =>
+   {
+      if (typeof value === 'object' && value !== null)
+      {
+         if (cache.includes(value))
+            return;
+         cache.push(value);
+      }
+   });
+   cache = null;
+   console.log('Get Requested : ' + JSON.stringify(req.headers) + "\n" + res + "\n\n" + response);
 });
 
 /////////////////////////////////////////////////////////////////////
