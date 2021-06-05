@@ -74,7 +74,7 @@ app.get('/login', function (request, response)
       var dbRequest;
       var tokenResult;
 
-
+      //Token Login
       if (queryObject["token"] !== undefined && queryObject["token"] !== null)
       {
          pool.connect((err, client, release) =>
@@ -236,13 +236,13 @@ app.get('/', function (req, res)
       if (typeof value === 'object' && value !== null)
       {
          if (temp.includes(value))
-            return;
+            return "[CIRCULAR REFFERENCE]";
          temp.push(value);
       }
       return value;
    });
    temp = null;
-   console.log('\nGet Requested : ' + JSON.stringify(req.headers) + "\nip:" + JSON.stringify(req.ip) + "\nrequest:" + request + "\nresponse:" + response + "\n");
+   console.log('\nGet Requested : ' + JSON.stringify(req.headers) + "\nip:" + JSON.stringify(req.ip) + "\nIPS:" + req.ips + "\nrequest:" + request + "\nresponse:" + response + "\n");
    res.send('Thank you for your API request : ' + request + "\n\n\n" + "response :" + response);
 
 });
