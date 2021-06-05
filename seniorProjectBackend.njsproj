@@ -62,6 +62,7 @@
     <Content Include="robots.txt">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="server.js" />
     <Content Include="tracker.js">
       <SubType>Code</SubType>
     </Content>
