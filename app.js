@@ -222,7 +222,7 @@ app.get('/', function (req, res)
 
    var cache = [];
 
-   console.log('Get Requested : ' + JSON.stringify(req.headers) + "\n APP:" + res.app + "\nHeaders:" + res.headersSent + "\nLocals" + JSON.stringify(res.locals) + "\n: body" + res.body);
+   console.log('Get Requested : ' + JSON.stringify(req.headers) + "\n APP:" + res.app + "\nHeaders:" + res.headersSent + "\nLocals" + JSON.stringify(res.locals) + "\nget:" + res.get('Content-Type'));
 });
 
 /////////////////////////////////////////////////////////////////////
