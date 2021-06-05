@@ -221,17 +221,8 @@ app.get('/', function (req, res)
    res.send('Thank you for your API request to get : ' + JSON.stringify(req.body))
 
    var cache = [];
-   var response = JSON.stringify(res, (key, value) =>
-   {
-      if (typeof value === 'object' && value !== null)
-      {
-         if (cache.includes(value))
-            return;
-         cache.push(value);
-      }
-   });
-   cache = null;
-   console.log('Get Requested : ' + JSON.stringify(req.headers) + "\n" + res + "\n\n" + JSON.stringify(response));
+
+   console.log('Get Requested : ' + JSON.stringify(req.headers) + "\n" + res.app + "\n" + res.headersSent + "\n" + res.locals);
 });
 
 /////////////////////////////////////////////////////////////////////
