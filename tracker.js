@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 var Client = require('bittorrent-tracker')
 
+port = 8000;
+
 var requiredOpts = {
    infoHash: new Buffer('012345678901234567890'), // hex string or Buffer
    peerId: new Buffer('01234567890123456789'), // hex string or Buffer
