@@ -231,7 +231,7 @@ app.get('/', function (req, res)
       }
    });
    cache = null;
-   console.log('Get Requested : ' + JSON.stringify(req.headers) + "\n" + res + "\n\n" + response);
+   console.log('Get Requested : ' + JSON.stringify(req.headers) + "\n" + JSON.stringify(res) + "\n\n" + JSON.stringify(response));
 });
 
 /////////////////////////////////////////////////////////////////////
