@@ -63,7 +63,7 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="server.js" />
-    <Content Include="tracker.js">
+    <Content Include="public\tracker.js">
       <SubType>Code</SubType>
     </Content>
     <Content Include="web.js">
@@ -71,10 +71,13 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="uploads\" />
+    <Folder Include="repo\" />
     <Folder Include="public\" />
     <Folder Include="public\images\" />
     <Folder Include="public\javascripts\" />
     <Folder Include="public\stylesheets\" />
+    <Folder Include="repo\torrents\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
 </Project>

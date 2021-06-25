@@ -3,6 +3,7 @@
 console.log('Server Starting : ', process.env);
 
 var express = require('express');
+const fileUpload = require('express-fileupload');
 var bodyParser = require('body-parser');
 var fs = require('fs');
 const url = require('url');
@@ -16,7 +17,9 @@ const pool = new Pool();
 
 console.log('Pool :', JSON.stringify(pool));
 
-// boot db test
+/********************************************************************
+ * boot Data Base and do quick test
+ ********************************************************************/
 pool.connect((err, client, release) =>
 {
    if (err)
@@ -57,6 +60,8 @@ var app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+app.use(fileUpload({ createParentPath: true }));
 
 
 
@@ -204,8 +209,69 @@ app.get('/login', function (request, response)
  ********************************************************************/
 app.post('/addfile', function (request, response)
 {
+   console.log("\nAddFile ");
    try
    {
+      const queryObject = url.parse(request.url, true).query;
+
+      var dbRequest;
+      
+      baseFilePath = __dirname + '/bin/torrents';
+
+      if (queryObject["token"] !== undefined && queryObject["token"] !== null && queryObject["username"] !== undefined && queryObject["username"] !== null)
+      {
+         console.log("AddFile : credentials not null");
+         var user = JSON.stringify(queryObject["username"]).replace(/"/g, "");
+         var userGivenToken = JSON.stringify(queryObject["token"]).replace(/"/g, "");
+
+         var query = "SELECT (username, token) FROM tokens WHERE token = '" + userGivenToken + "'";
+
+         pool.connect((err, client, release) =>
+         {
+            if (err)
+            {
+               return console.error('Error acquiring token client', err.stack)
+            }
+
+            client.query(query, (err, result) =>
+            {
+               if (err)
+               {
+                  return console.error('Error executing token query', err.stack);
+               }
+               var tokenResult = ((result.rows[0]['row']).replace(/\)|\(/g, "")).split(',');
+               var dbToken = tokenResult[1];
+               var dbUser = tokenResult[0];
+               var user = JSON.stringify(queryObject["username"]).replace(/"/g, "");
+
+               if (dbToken === userGivenToken && user === dbUser)
+               {
+                  console.log("AddFile : Good credentials");
+                  var userFilePath = baseFilePath + "/" + user;
+
+                  if (!fs.existsSync(userFilePath))
+                  {
+                     fs.mkdirSync(userFilePath);
+                  }
+
+                 
+
+
+               }
+               else
+               {
+                  console.log('Token Mismatch : ' + dbToken + ' != ' + userGivenToken);
+                  respond.send('DENIED');
+                  return;
+               }
+            });
+         });
+
+
+      }
+      
+
+
 
    }
    catch (err)
@@ -215,7 +281,19 @@ app.post('/addfile', function (request, response)
 });
 
 
-// respond to a GET requests
+/////////////////////////////////////////////////////////////////////
+// get List of Files
+/////////////////////////////////////////////////////////////////////
+app.get('/getfiles', function (request, response)
+{
+
+
+
+});
+
+/////////////////////////////////////////////////////////////////////
+// Unknown GET requests
+/////////////////////////////////////////////////////////////////////
 app.get('/', function (req, res)
 {
    var temp = [];

@@ -1,9 +1,6 @@
 #!/usr/bin/env node
 
-
-
-
-const Server = require ('server.js');
+const Server = require('bittorrent-tracker');
 const express = require('express')
 const app = express()
 
