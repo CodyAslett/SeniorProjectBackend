@@ -276,8 +276,8 @@ app.post('/addfile', function (request, response)
    }
    catch (err)
    {
-      Console.error("AddFile : Error trying to add file : " + e.stack);
-      response.send("ERROR : FAILED TO ADD FILE")
+      console.error("AddFile : Error trying to add file : " + e.stack);
+      response.send("ERROR : FAILED TO ADD FILE");
    }
 });
 
