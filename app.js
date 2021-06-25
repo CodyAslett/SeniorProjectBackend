@@ -122,7 +122,7 @@ app.get('/login', function (request, response)
                else
                {
                   console.log('Token Mismatch : ' + dbToken + ' != ' + userGivenToken);
-                  respond.send('DENIED');
+                  response.send('DENIED');
                   return;
                }
             });
@@ -261,7 +261,7 @@ app.post('/addfile', function (request, response)
                else
                {
                   console.log('Token Mismatch : ' + dbToken + ' != ' + userGivenToken);
-                  respond.send('DENIED');
+                  response.send('DENIED');
                   return;
                }
             });
@@ -276,7 +276,8 @@ app.post('/addfile', function (request, response)
    }
    catch (err)
    {
-
+      Console.error("AddFile : Error trying to add file : " + e.stack);
+      response.send("ERROR : FAILED TO ADD FILE")
    }
 });
 
