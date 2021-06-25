@@ -251,16 +251,31 @@ app.post('/addfile', function (request, response)
 
                   if (!fs.existsSync(userFilePath))
                   {
+                     console.log("AddFile : Making file " + user);
                      fs.mkdirSync(userFilePath);
                   }
 
-                 
+                  let torrent = request.files.torrent;
 
+                  var newTorrentPath = userFilePath + '/' + avatar.name;
+                  torrent.mv(newTorrentPath);
 
+                  if (fs.existsSync(newTorrentPath))
+                  {
+                     console.log("AddFile : uploaded file : " + newTorrentPath);
+                     response.send('ACCEPTED : File Uploaded');
+                     return;
+                  }
+                  else
+                  {
+                     console.log("AddFile : Failed to upload file : " + newTorrentPath);
+                     response.send('Failed : internal error uploading file');
+                     return;
+                  }
                }
                else
                {
-                  console.log('Token Mismatch : ' + dbToken + ' != ' + userGivenToken);
+                  console.log('AddFile : Token Mismatch : ' + dbUser + ':' + dbToken + ' != ' + user + ':' + userGivenToken);
                   response.send('DENIED');
                   return;
                }
