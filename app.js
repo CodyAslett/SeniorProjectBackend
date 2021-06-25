@@ -257,7 +257,7 @@ app.post('/addfile', function (request, response)
 
                   let torrent = request.files.torrent;
 
-                  var newTorrentPath = userFilePath + '/' + avatar.name;
+                  var newTorrentPath = userFilePath + '/' + torrent.name;
                   torrent.mv(newTorrentPath);
 
                   if (fs.existsSync(newTorrentPath))
