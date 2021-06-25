@@ -216,7 +216,7 @@ app.post('/addfile', function (request, response)
 
       var dbRequest;
       
-      baseFilePath = __dirname + '/bin/torrents';
+      var baseFilePath = __dirname + '/repo/torrents';
 
       if (queryObject["token"] !== undefined && queryObject["token"] !== null && queryObject["username"] !== undefined && queryObject["username"] !== null)
       {
