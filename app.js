@@ -258,20 +258,22 @@ app.post('/addfile', function (request, response)
                   let torrent = request.files.torrent;
 
                   var newTorrentPath = userFilePath + '/' + torrent.name;
-                  await torrent.mv(newTorrentPath);
+                  torrent.mv(newTorrentPath, function () {
+                     if (fs.existsSync(newTorrentPath))
+                     {
+                        console.log("AddFile : uploaded file : " + newTorrentPath);
+                        response.send('ACCEPTED : File Uploaded');
+                        return;
+                     }
+                     else
+                     {
+                        console.log("AddFile : Failed to upload file : " + newTorrentPath);
+                        response.send('Failed : internal error uploading file');
+                        return;
+                     }
+                  });
 
-                  if (fs.existsSync(newTorrentPath))
-                  {
-                     console.log("AddFile : uploaded file : " + newTorrentPath);
-                     response.send('ACCEPTED : File Uploaded');
-                     return;
-                  }
-                  else
-                  {
-                     console.log("AddFile : Failed to upload file : " + newTorrentPath);
-                     response.send('Failed : internal error uploading file');
-                     return;
-                  }
+
                }
                else
                {
