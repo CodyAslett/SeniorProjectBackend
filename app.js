@@ -211,6 +211,7 @@ app.get('/login', function (request, response)
 app.post('/addfile', function (request, response)
 {
    console.log("\nAddFile ");
+   var returnValue = 'Failed : internal error uploading file';
    try
    {
       const queryObject = url.parse(request.url, true).query;
@@ -236,7 +237,7 @@ app.post('/addfile', function (request, response)
                return console.error('Error acquiring token client', err.stack)
             }
 
-            client.query(query, (err, result) =>
+            await client.query(query, (err, result) =>
             {
                if (err)
                {
@@ -266,7 +267,7 @@ app.post('/addfile', function (request, response)
                      {
                         var insertIntoQuery = "INSERT INTO useruploadedfiles (path, fileextention, username, tokenused) VALUES ('" + newTorrentPath + "', '" + path.extname(newTorrentPath) + "', '" + user + "', '" + userGivenToken + "')";
                         console.log("AddFile : trying to insert file to DB : " + insertIntoQuery);
-                        client.query(insertIntoQuery, (err, result) =>
+                        await client.query(insertIntoQuery, (err, result) =>
                         {
                            if (err)
                            {
@@ -275,8 +276,7 @@ app.post('/addfile', function (request, response)
                            console.log("AddFile : trying to insert file to DB  succeeded");
                            fileUploadAccepted = true;
                            console.log("AddFile : uploaded file and will send ACCEPTED ");
-                           response.send('ACCEPTED: File Uploaded');
-                           return;
+                           returnValue = 'ACCEPTED: File Uploaded';
                         });
                      }
                   });
@@ -286,12 +286,8 @@ app.post('/addfile', function (request, response)
 
 
       }
-      if (!fileUploadAccepted)
-      {
-         console.log("AddFile : Failed to upload file");
-         response.send('Failed : internal error uploading file');
-         return;
-      }
+      response.send(returnValue);
+      return;
    }
    catch (err)
    {
