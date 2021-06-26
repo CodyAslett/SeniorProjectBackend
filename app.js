@@ -207,6 +207,7 @@ app.get('/login', function (request, response)
 
 /********************************************************************
  * Add File
+ * TODO : add checks to see if path already exists in the database 
  ********************************************************************/
 app.post('/addfile', function (request, response)
 {
@@ -216,11 +217,8 @@ app.post('/addfile', function (request, response)
    {
       const queryObject = url.parse(request.url, true).query;
 
-      var dbRequest;
-      
       var baseFilePath = __dirname + '/repo/torrents';
 
-      var fileUploadAccepted = false;
 
       if (queryObject["token"] !== undefined && queryObject["token"] !== null && queryObject["username"] !== undefined && queryObject["username"] !== null)
       {
@@ -246,7 +244,6 @@ app.post('/addfile', function (request, response)
                var tokenResult = ((result.rows[0]['row']).replace(/\)|\(/g, "")).split(',');
                var dbToken = tokenResult[1];
                var dbUser = tokenResult[0];
-               var user = JSON.stringify(queryObject["username"]).replace(/"/g, "");
 
                if (dbToken === userGivenToken && user === dbUser)
                {
@@ -285,6 +282,12 @@ app.post('/addfile', function (request, response)
                      }
                   });
                }
+               else
+               {
+                  console.log("AddFile : username token credientals missmatch");
+                  response.send(returnValue);
+                  return;
+               }
             });
 
          });
@@ -304,9 +307,50 @@ app.post('/addfile', function (request, response)
 /////////////////////////////////////////////////////////////////////
 app.get('/getfiles', function (request, response)
 {
+   try
+   {
+      const queryObject = url.parse(request.url, true).query;
+      if (queryObject["token"] !== undefined && queryObject["token"] !== null && queryObject["username"] !== undefined && queryObject["username"] !== null)
+      {
+         var user = JSON.stringify(queryObject["username"]).replace(/"/g, "");
+         var userGivenToken = JSON.stringify(queryObject["token"]).replace(/"/g, "");
 
+         var query = "SELECT (username, token) FROM tokens WHERE token = '" + userGivenToken + "'";
 
+         pool.connect((err, client, release) =>
+         {
+            if (err)
+            {
+               return console.error('Error acquiring token client', err.stack)
+            }
+            client.query(query, (err, result) =>
+            {
+               if (err)
+               {
+                  return console.error('Error executing token query', err.stack);
+               }
+               tokenResult = ((result.rows[0]['row']).replace(/\)|\(/g, "")).split(',');
+               var dbToken = tokenResult[1];
+               var dbUser = tokenResult[0];
 
+               if (dbToken === userGivenToken && user === dbUser)
+               {
+                  var queryFileList = "SELECT (id, path) FROM useruploadedfiles WHERE username = '" + user + "' AND fileextention = '.torrent'";
+                  client.query(queryFileList, (err, result) =>
+                  {
+                     console.log("GetFileList : sending : " + JSON.stringify(result));
+                     response.send("ACCEPTED : " + JSON.stringify(result));
+                     return;
+                  });
+               }
+            });
+         });
+      }
+   }
+   catch (err)
+   {
+      console.log(err.stack);
+   }
 });
 
 /////////////////////////////////////////////////////////////////////
