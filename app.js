@@ -380,6 +380,7 @@ app.get('/getfiles', function (request, response)
 app.get('/getfile', function (request, response)
 {
    response.attachment("/repo/torrents/cody/Rick Riordan - The Lightning Thief 1.mp3.torrent");
+   console.log(response.get('Content-Disposition'));
    response.send("ACCEPTED");
 });
 
