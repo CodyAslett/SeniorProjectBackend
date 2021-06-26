@@ -237,7 +237,7 @@ app.post('/addfile', function (request, response)
                return console.error('Error acquiring token client', err.stack)
             }
 
-            await client.query(query, (err, result) =>
+            client.query(query, (err, result) =>
             {
                if (err)
                {
@@ -267,7 +267,7 @@ app.post('/addfile', function (request, response)
                      {
                         var insertIntoQuery = "INSERT INTO useruploadedfiles (path, fileextention, username, tokenused) VALUES ('" + newTorrentPath + "', '" + path.extname(newTorrentPath) + "', '" + user + "', '" + userGivenToken + "')";
                         console.log("AddFile : trying to insert file to DB : " + insertIntoQuery);
-                        await client.query(insertIntoQuery, (err, result) =>
+                        client.query(insertIntoQuery, (err, result) =>
                         {
                            if (err)
                            {
