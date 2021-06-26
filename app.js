@@ -6,6 +6,7 @@ var express = require('express');
 const fileUpload = require('express-fileupload');
 var bodyParser = require('body-parser');
 var fs = require('fs');
+var path = require('path');
 const url = require('url');
 const ip = require('ip');
 const hat = require('hat');
@@ -254,16 +255,20 @@ app.post('/addfile', function (request, response)
                      console.log("AddFile : Making file " + user);
                      fs.mkdirSync(userFilePath);
                   }
-
                   let torrent = request.files.torrent;
 
                   var newTorrentPath = userFilePath + '/' + torrent.name;
-                  torrent.mv(newTorrentPath, function () {
+                  torrent.mv(newTorrentPath, function ()
+                  {
                      if (fs.existsSync(newTorrentPath))
                      {
-                        console.log("AddFile : uploaded file : " + newTorrentPath);
-                        response.send('ACCEPTED : File Uploaded');
-                        return;
+                        var insertIntoQuery = "INSERT INTO useruploadedfiles (path, fileextention, username, tokenused) VALUES ('" + newTorrentPath + "', '" + path.extname(newTorrentPath) + "', '" + user + "', '" + userGivenToken;
+                        client.query(insertIntoQuery, (err, result) =>
+                        {
+                           console.log("AddFile : uploaded file : " + newTorrentPath);
+                           response.send('ACCEPTED : File Uploaded');
+                           return;
+                        });
                      }
                      else
                      {
@@ -272,8 +277,6 @@ app.post('/addfile', function (request, response)
                         return;
                      }
                   });
-
-
                }
                else
                {
@@ -286,7 +289,8 @@ app.post('/addfile', function (request, response)
 
 
       }
-      
+      console.log('AddFile : no userName token combination found: ');
+      response.send('DENIED');
 
 
 
