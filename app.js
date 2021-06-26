@@ -18,6 +18,9 @@ const pool = new Pool();
 
 console.log('Pool :', JSON.stringify(pool));
 
+// TODO : move athentication of token username combo into seperate function
+// TODO : Add sanitation of user input
+
 /********************************************************************
  * boot Data Base and do quick test
  ********************************************************************/
@@ -370,6 +373,16 @@ app.get('/getfiles', function (request, response)
       console.log(err.stack);
    }
 });
+
+/////////////////////////////////////////////////////////////////////
+// get a File
+/////////////////////////////////////////////////////////////////////
+app.get('/getfiles', function (request, response)
+{
+   response.attachment("/home/ubuntu/seniorProjectBackend/repo/torrents/cody/Rick Riordan - The Lightning Thief 1.mp3.torrent");
+});
+
+
 
 /////////////////////////////////////////////////////////////////////
 // Unknown GET requests
