@@ -346,8 +346,10 @@ app.get('/getfiles', function (request, response)
                         var rowID = JSON.stringify(result.rows[i][0]).split(',')[0];
                         rowID = rowID.replaceAll(/\D/g, '');
 
+                        var rowName = JSON.stringify(result.rows[i][0]).split(',')[1];
                         var file = {
-                           id: rowID
+                           id: rowID,
+                           name: rowName
                         };
                         torrentFiles.files.push(file);
                      }
