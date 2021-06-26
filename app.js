@@ -329,7 +329,7 @@ app.get('/getfiles', function (request, response)
                {
                   return console.error('Error executing token query', err.stack);
                }
-               tokenResult = ((result.rows[0]['row']).replace(/\)|\(/g, "")).split(',');
+               var tokenResult = ((result.rows[0]['row']).replace(/\)|\(/g, "")).split(',');
                var dbToken = tokenResult[1];
                var dbUser = tokenResult[0];
 
