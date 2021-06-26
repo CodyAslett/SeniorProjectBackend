@@ -286,13 +286,13 @@ app.post('/addfile', function (request, response)
       }
       if (fileUploadAccepted)
       {
-         console.log("AddFile : uploaded file and will send ACCEPTED : " + newTorrentPath);
+         console.log("AddFile : uploaded file and will send ACCEPTED ");
          response.send('ACCEPTED: File Uploaded');
          return;
       }
       else
       {
-         console.log("AddFile : Failed to upload file : " + newTorrentPath);
+         console.log("AddFile : Failed to upload file");
          response.send('Failed : internal error uploading file');
          return;
       }
