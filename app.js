@@ -266,6 +266,10 @@ app.post('/addfile', function (request, response)
                         console.log("AddFile : trying to insert file to DB : " + insertIntoQuery);
                         client.query(insertIntoQuery, (err, result) =>
                         {
+                           if (err)
+                           {
+                              return console.error('AddFile : Error : executing insert', err.stack);
+                           }
                            console.log("AddFile : uploaded file : " + newTorrentPath);
                            response.send('ACCEPTED : File Uploaded');
                            return;
