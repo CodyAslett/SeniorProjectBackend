@@ -347,6 +347,7 @@ app.get('/getfiles', function (request, response)
                         rowID = rowID.replaceAll(/\D/g, '');
 
                         var rowName = JSON.stringify(result.rows[i][0]).split(',')[1];
+                        rowName = rowName.replace(/[\\"()]/g);
                         var file = {
                            id: rowID,
                            name: rowName
