@@ -219,6 +219,8 @@ app.post('/addfile', function (request, response)
       
       var baseFilePath = __dirname + '/repo/torrents';
 
+      var fileUploadAccepted = false;
+
       if (queryObject["token"] !== undefined && queryObject["token"] !== null && queryObject["username"] !== undefined && queryObject["username"] !== null)
       {
          console.log("AddFile : credentials not null");
@@ -270,36 +272,30 @@ app.post('/addfile', function (request, response)
                            {
                               return console.error('AddFile : Error : executing insert', err.stack);
                            }
-                           console.log("AddFile : uploaded file and will send ACCEPTED : " + newTorrentPath);
-                           response.send('ACCEPTED : File Uploaded');
-                           return;
-                           console.log("ADDFILE : this should never be seen");
+                           console.log("AddFile : trying to insert file to DB  succeeded");
+                           fileUploadAccepted = true;
+                           
                         });
                      }
-                     else
-                     {
-                        console.log("AddFile : Failed to upload file : " + newTorrentPath);
-                        response.send('Failed : internal error uploading file');
-                        return;
-                     }
                   });
-               }
-               else
-               {
-                  console.log('AddFile : Token Mismatch : ' + dbUser + ':' + dbToken + ' != ' + user + ':' + userGivenToken);
-                  response.send('DENIED');
-                  return;
                }
             });
          });
 
 
       }
-      console.log('AddFile : no userName token combination found: ');
-      response.send('DENIED');
-
-
-
+      if (fileUploadAccepted)
+      {
+         console.log("AddFile : uploaded file and will send ACCEPTED : " + newTorrentPath);
+         response.send('ACCEPTED: File Uploaded');
+         return;
+      }
+      else
+      {
+         console.log("AddFile : Failed to upload file : " + newTorrentPath);
+         response.send('Failed : internal error uploading file');
+         return;
+      }
    }
    catch (err)
    {
