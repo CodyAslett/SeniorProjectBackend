@@ -344,7 +344,7 @@ app.get('/getfiles', function (request, response)
                      {
                         console.log("getfile : getting info for : " + JSON.stringify(result.rows[i]));
                         var rowID = JSON.stringify(result.rows[i][0]).split(',')[0];
-                        rowID = rowID.replaceAll('/["({}]/g', '');
+                        rowID = rowID.replaceAll('/"(|{|}/g', '');
 
                         var file = {
                            id: rowID
