@@ -338,8 +338,8 @@ app.get('/getfiles', function (request, response)
                   var queryFileList = "SELECT (id, path) FROM useruploadedfiles WHERE username = '" + user + "' AND fileextention = '.torrent'";
                   client.query(queryFileList, (err, result) =>
                   {
-                     console.log("GetFileList : sending : " + JSON.stringify(result));
-                     response.send("ACCEPTED : " + JSON.stringify(result));
+                     console.log("GetFileList : sending : " + JSON.stringify(result.rows));
+                     response.send("ACCEPTED : " + JSON.stringify(result.rows));
                      return;
                   });
                }
