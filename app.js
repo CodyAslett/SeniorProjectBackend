@@ -348,6 +348,7 @@ app.get('/getfiles', function (request, response)
 
                         var rowName = JSON.stringify(result.rows[i][0]).split(',')[1];
                         rowName = rowName.replace(/[\\"()]/g, '');
+                        rowName = path.basename(rowName, '.torrent');
                         var file = {
                            id: rowID,
                            name: rowName
