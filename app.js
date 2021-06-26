@@ -342,9 +342,9 @@ app.get('/getfiles', function (request, response)
                      };
                      for (var i = 0; i < result.rowCount; i++)
                      {
+                        console.log("getfile : getting info for : " + result.rows[i])
                         var file = {
-                           id: result.rows[i],
-                           name: path.basename(result.rows[i], '.torrent')
+                           id: result.rows[i]
                         };
                         torrentFiles.files.push(file);
                      }
