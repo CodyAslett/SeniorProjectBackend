@@ -379,7 +379,7 @@ app.get('/getfiles', function (request, response)
 /////////////////////////////////////////////////////////////////////
 app.get('/getfile', function (request, response)
 {
-   var testFile = " / home / ubuntu / seniorProjectBackend / repo / torrents / cody / Rick Riordan - The Lightning Thief 1.mp3.torrent";
+   var testFile = "repo / torrents / cody / Rick Riordan - The Lightning Thief 1.mp3.torrent";
    response.attachment(testFile);
    console.log(response.get('Content-Disposition'));
    response.sendfile(testFile)
