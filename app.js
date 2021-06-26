@@ -263,12 +263,16 @@ app.post('/addfile', function (request, response)
                      if (fs.existsSync(newTorrentPath))
                      {
                         var insertIntoQuery = "INSERT INTO useruploadedfiles (path, fileextention, username, tokenused) VALUES ('" + newTorrentPath + "', '" + path.extname(newTorrentPath) + "', '" + user + "', '" + userGivenToken;
+                        console.log("AddFile : trying to insert file to DB : " + insertIntoQuery);
                         client.query(insertIntoQuery, (err, result) =>
                         {
                            console.log("AddFile : uploaded file : " + newTorrentPath);
                            response.send('ACCEPTED : File Uploaded');
                            return;
                         });
+                        console.log("AddFile : Failed to add file to DB : " + newTorrentPath);
+                        response.send('Failed : internal error uploading file');
+                        return;
                      }
                      else
                      {
