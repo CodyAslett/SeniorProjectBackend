@@ -344,7 +344,7 @@ app.get('/getfiles', function (request, response)
                      {
                         console.log("getfile : getting info for : " + JSON.stringify(result.rows[i]));
                         var file = {
-                           id: Json.stringify(result.rows[i][0]).split(',')[0]
+                           id: JSON.stringify(result.rows[i][0]).split(',')[0]
                         };
                         torrentFiles.files.push(file);
                      }
