@@ -277,6 +277,10 @@ app.post('/addfile', function (request, response)
                            fileUploadAccepted = true;
                            console.log("AddFile : uploaded file and will send ACCEPTED ");
                            returnValue = 'ACCEPTED: File Uploaded';
+
+                           console.log("AddFile : will return : " + returnValue);
+                           response.send(returnValue);
+                           return;
                         });
                      }
                   });
@@ -284,9 +288,7 @@ app.post('/addfile', function (request, response)
             });
 
          });
-         console.log("AddFile : will return : " + returnValue);
-         response.send(returnValue);
-         return;
+        
       }
    }
    catch (err)
