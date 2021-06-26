@@ -230,7 +230,7 @@ app.post('/addfile', function (request, response)
 
          var query = "SELECT (username, token) FROM tokens WHERE token = '" + userGivenToken + "'";
 
-         await pool.connect((err, client, release) =>
+         pool.connect((err, client, release) =>
          {
             if (err)
             {
@@ -282,13 +282,12 @@ app.post('/addfile', function (request, response)
                   });
                }
             });
+
          });
-
-
+         console.log("AddFile : will return : " + returnValue);
+         response.send(returnValue);
+         return;
       }
-      console.log("AddFile : will return : " + returnValue);
-      response.send(returnValue);
-      return;
    }
    catch (err)
    {
