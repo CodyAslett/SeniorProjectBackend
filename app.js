@@ -270,13 +270,11 @@ app.post('/addfile', function (request, response)
                            {
                               return console.error('AddFile : Error : executing insert', err.stack);
                            }
-                           console.log("AddFile : uploaded file : " + newTorrentPath);
+                           console.log("AddFile : uploaded file and will send ACCEPTED : " + newTorrentPath);
                            response.send('ACCEPTED : File Uploaded');
                            return;
+                           console.log("ADDFILE : this should never be seen");
                         });
-                        console.log("AddFile : Failed to add file to DB : " + newTorrentPath);
-                        response.send('Failed : internal error uploading file');
-                        return;
                      }
                      else
                      {
