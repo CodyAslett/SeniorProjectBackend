@@ -343,8 +343,8 @@ app.get('/getfiles', function (request, response)
                      for (var i = 0; i < result.rowCount; i++)
                      {
                         var file = {
-                           id: result.rows[i].value[0],
-                           name: path.basename(result.rows[i].value[1], '.torrent')
+                           id: result.rows[i],
+                           name: path.basename(result.rows[i], '.torrent')
                         };
                         torrentFiles.files.push(file);
                      }
