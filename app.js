@@ -333,8 +333,8 @@ app.get('/getfiles', function (request, response)
 
                if (dbToken === userGivenToken && user === dbUser)
                {
-                  var queryFileList = "SELECT (id, path) FROM useruploadedfiles WHERE username = '" + user + "' AND fileextention = '.torrent'";
-                  client.query(queryFileList, (err, result) =>
+                  var queryFileList = "SELECT (id, path) FROM useruploadedfiles WHERE username = '" + user + "' AND fileextention = '.torrent';";
+                  client.query({ rowMode: 'array', text: queryFileList }, (err, result) =>
                   {
                      var torrentFiles = {
                         fileCount: result.rowCount,
@@ -343,6 +343,7 @@ app.get('/getfiles', function (request, response)
                      for (var i = 0; i < result.rowCount; i++)
                      {
                         console.log("getfile : getting info for : " + JSON.stringify(result.rows[i]));
+                        var dbId = result.rows[i].row;
                         var file = {
                            id: result.rows[i].row
                         };
