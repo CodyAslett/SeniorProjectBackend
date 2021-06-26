@@ -270,8 +270,6 @@ app.post('/addfile', function (request, response)
                            {
                               return console.error('AddFile : Error : executing insert', err.stack);
                            }
-                           console.log("AddFile : trying to insert file to DB  succeeded");
-                           fileUploadAccepted = true;
                            console.log("AddFile : uploaded file and will send ACCEPTED ");
                            returnValue = 'ACCEPTED: File Uploaded';
 
