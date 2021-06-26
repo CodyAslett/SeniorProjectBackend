@@ -342,10 +342,10 @@ app.get('/getfiles', function (request, response)
                      };
                      for (var i = 0; i < result.rowCount; i++)
                      {
-                        console.log("getfile : getting info for : " + JSON.stringify(result.rows[i]));
-                        var dbId = result.rows[i].row;
+                        console.log("getfile : getting info for : " + JSON.stringify(result.fields[i]));
+                        var dbId = result.fields[i].name;
                         var file = {
-                           id: result.rows[i].row
+                           id: result.fields[i].name
                         };
                         torrentFiles.files.push(file);
                      }
