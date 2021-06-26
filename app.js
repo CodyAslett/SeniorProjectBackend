@@ -377,7 +377,7 @@ app.get('/getfiles', function (request, response)
 /////////////////////////////////////////////////////////////////////
 // get a File
 /////////////////////////////////////////////////////////////////////
-app.get('/getfiles', function (request, response)
+app.get('/getfile', function (request, response)
 {
    response.attachment("/home/ubuntu/seniorProjectBackend/repo/torrents/cody/Rick Riordan - The Lightning Thief 1.mp3.torrent");
 });
