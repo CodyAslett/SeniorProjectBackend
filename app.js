@@ -274,7 +274,9 @@ app.post('/addfile', function (request, response)
                            }
                            console.log("AddFile : trying to insert file to DB  succeeded");
                            fileUploadAccepted = true;
-                           
+                           console.log("AddFile : uploaded file and will send ACCEPTED ");
+                           response.send('ACCEPTED: File Uploaded');
+                           return;
                         });
                      }
                   });
@@ -284,13 +286,7 @@ app.post('/addfile', function (request, response)
 
 
       }
-      if (fileUploadAccepted)
-      {
-         console.log("AddFile : uploaded file and will send ACCEPTED ");
-         response.send('ACCEPTED: File Uploaded');
-         return;
-      }
-      else
+      if (!fileUploadAccepted)
       {
          console.log("AddFile : Failed to upload file");
          response.send('Failed : internal error uploading file');
