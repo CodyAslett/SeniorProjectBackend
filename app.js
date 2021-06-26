@@ -336,8 +336,21 @@ app.get('/getfiles', function (request, response)
                   var queryFileList = "SELECT (id, path) FROM useruploadedfiles WHERE username = '" + user + "' AND fileextention = '.torrent'";
                   client.query(queryFileList, (err, result) =>
                   {
-                     console.log("GetFileList : sending : " + JSON.stringify(result.rows));
-                     response.send("ACCEPTED : " + JSON.stringify(result.rows));
+                     var torrentFiles = {
+                        fileCount: result.rowCount,
+                        files : []
+                     };
+                     for (var i = 0; i < result.rowCount; i++)
+                     {
+                        var file = {
+                           id: result.rows[i].value[0],
+                           name: path.basename(result.rows[i].value[1], '.torrent')
+                        };
+                        torrentFiles.files.push(file);
+                     }
+
+                     console.log("GetFileList : sending : " + JSON.stringify(torrentFiles));
+                     response.send("ACCEPTED : " + JSON.stringify(torrentFiles));
                      return;
                   });
                }
