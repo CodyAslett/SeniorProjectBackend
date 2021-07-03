@@ -211,6 +211,7 @@ app.get('/login', function (request, response)
 /********************************************************************
  * Add File
  * TODO : add checks to see if path already exists in the database 
+ * TODO : setup bad request respons so doesn't hang
  ********************************************************************/
 app.post('/addfile', function (request, response)
 {
@@ -235,6 +236,7 @@ app.post('/addfile', function (request, response)
          {
             if (err)
             {
+               requ
                return console.error('Error acquiring token client', err.stack)
             }
 
@@ -242,6 +244,7 @@ app.post('/addfile', function (request, response)
             {
                if (err)
                {
+                  response.send(500, "ERROR : FAILED TO ADD FILE");
                   return console.error('Error executing token query', err.stack);
                }
                var tokenResult = ((result.rows[0]['row']).replace(/\)|\(/g, "")).split(',');
@@ -271,6 +274,7 @@ app.post('/addfile', function (request, response)
                         {
                            if (err)
                            {
+                              response.send(500, "ERROR : FAILED TO ADD FILE");
                               return console.error('AddFile : Error : executing insert', err.stack);
                            }
                            console.log("AddFile : uploaded file and will send ACCEPTED ");
@@ -298,14 +302,15 @@ app.post('/addfile', function (request, response)
    catch (err)
    {
       console.error("AddFile : Error trying to add file : " + err.stack);
-      response.send("ERROR : FAILED TO ADD FILE");
+      response.send(500, "ERROR : FAILED TO ADD FILE");
    }
 });
 
 
-/////////////////////////////////////////////////////////////////////
-// get List of Files
-/////////////////////////////////////////////////////////////////////
+/********************************************************************
+ * get List of Files
+ * TODO: setup bad request respons so doesn't hang
+*********************************************************************/
 app.get('/getfiles', function (request, response)
 {
    try
@@ -322,6 +327,7 @@ app.get('/getfiles', function (request, response)
          {
             if (err)
             {
+               response.send(500, "ERROR : Failed to a get list");
                return console.error('Error acquiring token client', err.stack)
             }
             client.query(query, (err, result) =>
@@ -341,7 +347,7 @@ app.get('/getfiles', function (request, response)
                   {
                      var torrentFiles = {
                         fileCount: result.rowCount,
-                        files : []
+                        files: []
                      };
                      for (var i = 0; i < result.rowCount; i++)
                      {
@@ -360,23 +366,35 @@ app.get('/getfiles', function (request, response)
                      }
 
                      console.log("GetFileList : sending : " + JSON.stringify(torrentFiles));
-                     response.send("ACCEPTED : " + JSON.stringify(torrentFiles));
+                     response.send(200, "ACCEPTED : " + JSON.stringify(torrentFiles));
                      return;
                   });
+               }
+               else
+               {
+                  response.send(403, "ERROR : Bad credentials");
+                  return;
                }
             });
          });
       }
+      else
+      {
+         response.send(400, "ERROR : Failed to a get list");
+         return;
+      }
    }
    catch (err)
    {
+      response.send(500, "ERROR : Failed to a get list");
       console.log(err.stack);
+      return;
    }
 });
 
-/////////////////////////////////////////////////////////////////////
-// get a File
-/////////////////////////////////////////////////////////////////////
+/********************************************************************
+ * get a File
+*********************************************************************/
 app.get('/getfile', function (request, response)
 {
    var testFile = "repo/torrents/cody/Rick Riordan - The Lightning Thief 1.mp3.torrent";
@@ -388,9 +406,9 @@ app.get('/getfile', function (request, response)
 
 
 
-/////////////////////////////////////////////////////////////////////
-// Unknown GET requests
-/////////////////////////////////////////////////////////////////////
+/********************************************************************
+ * Unknown GET requests
+*********************************************************************/
 app.get('/', function (req, res)
 {
    var temp = [];
@@ -422,9 +440,9 @@ app.get('/', function (req, res)
 
 });
 
-/////////////////////////////////////////////////////////////////////
-// Start
-/////////////////////////////////////////////////////////////////////
+/********************************************************************
+ * Start
+*********************************************************************/
 app.listen(apiPort, () => 
 {
    console.log('Example app listening on port : ' + apiPort)
