@@ -431,10 +431,11 @@ app.get('/getfile', function (request, response)
                if (dbToken === userGivenToken && user === dbUser)
                {
                   var queryFileList = "SELECT (path) FROM useruploadedfiles WHERE username = '" + user + "' AND id = " + fileId + ";";
-                  client.query({ rowMode: 'array', text: queryFileList }, (err, result) =>
+                  client.query({ rowMode: 'array', text: queryFileList }, (err, getFileResult) =>
                   {
-                     // var getFileResult = 
-                     console.log("GetFile result : " + result);
+                     var jsonResult = JSON.stringify(result);
+                        
+                     console.log("GetFile result : " + jsonResult);
                   });
 
 
