@@ -430,7 +430,7 @@ app.get('/getfile', function (request, response)
 
                if (dbToken === userGivenToken && user === dbUser)
                {
-                  var queryFileList = "SELECT (path) FROM useruploadedfiles WHERE username = '" + user + "' AND id = " + id + ";";
+                  var queryFileList = "SELECT (path) FROM useruploadedfiles WHERE username = '" + user + "' AND id = " + fileId + ";";
                   client.query({ rowMode: 'array', text: queryFileList }, (err, result) =>
                   {
                      // var getFileResult = 
