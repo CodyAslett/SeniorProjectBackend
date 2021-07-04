@@ -441,11 +441,11 @@ app.get('/getfile', function (request, response)
                      }
 
                      var jsonResult = JSON.stringify(getFileResult);
-                     var row = getFileResult.rows[0];
+                     var filePath = getFileResult.rows[0];
 
                      console.log("GetFile row 0 : " + row);
                      console.log("GetFile result : " + jsonResult);
-                     
+                     response.sendfile(filePath);
                   });
 
 
