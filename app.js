@@ -418,32 +418,37 @@ app.get('/getfile', function (request, response)
                response.send(500, "ERROR : Failed to a get file");
                return console.error('Error acquiring token client', err.stack);
             }
-            var tokenResult = ((result.rows[0]['row']).replace(/\)|\(/g, "")).split(',');
-            var dbToken = tokenResult[1];
-            var dbUser = tokenResult[0];
-
-            if (dbToken === userGivenToken && user === dbUser)
+            client.query(query, (err, result) =>
             {
-               var queryFileList = "SELECT (path) FROM useruploadedfiles WHERE username = '" + user + "' AND id = " + id + ";";
-               client.query({ rowMode: 'array', text: queryFileList }, (err, result) =>
+
+               var tokenResult = ((result.rows[0]['row']).replace(/\)|\(/g, "")).split(',');
+               var dbToken = tokenResult[1];
+               var dbUser = tokenResult[0];
+
+               if (dbToken === userGivenToken && user === dbUser)
                {
-                  console.log("GetFile result : " + result);
-               });
+                  var queryFileList = "SELECT (path) FROM useruploadedfiles WHERE username = '" + user + "' AND id = " + id + ";";
+                  client.query({ rowMode: 'array', text: queryFileList }, (err, result) =>
+                  {
+                     console.log("GetFile result : " + result);
+                  });
 
 
 
+               }
+               else
+               {
+                  Console.Log("GetFile : Bad Credentials")
+                  response.status(203);
+                  response.send("ERROR : BAD credentials");
+                  return;
+               }
             }
-            else
-            {
-               response.status(203);
-               response.send("ERROR : BAD credentials");
-               return;
-            }
-
          });
       }
       else
       {
+         console.log("GetFile Bad Request");
          response.status(400);
          response.send("ERROR : BAD REQUEST");
          return;
@@ -457,7 +462,7 @@ app.get('/getfile', function (request, response)
 
    var testFile = "repo/torrents/cody/Rick Riordan - The Lightning Thief 1.mp3.torrent";
    response.attachment(testFile);
-   console.log(response.get('Content-Disposition'));
+   console.log("GetFile default Respons : " + response.get('Content-Disposition'));
    response.sendfile(testFile)
    //response.send("ACCEPTED");
 });
