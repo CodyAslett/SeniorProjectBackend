@@ -400,7 +400,7 @@ app.get('/getfiles', function (request, response)
 *********************************************************************/
 app.get('/getfile', function (request, response)
 {
-   Console.log("Get File Starting");
+   console.log("Get File Starting");
    try 
    {
       const queryObject = url.parse(request.url, true).query;
@@ -417,7 +417,7 @@ app.get('/getfile', function (request, response)
          {
             if (err)
             {
-               Console.log("GetFile Error pool error");
+               console.log("GetFile Error pool error");
                response.send(500, "ERROR : Failed to a get file");
                return console.error('Error acquiring token client', err.stack);
             }
@@ -442,7 +442,7 @@ app.get('/getfile', function (request, response)
                }
                else
                {
-                  Console.Log("GetFile : Bad Credentials")
+                  console.Log("GetFile : Bad Credentials")
                   response.status(203);
                   response.send("ERROR : BAD credentials");
                   return;
