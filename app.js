@@ -11,6 +11,7 @@ const url = require('url');
 const ip = require('ip');
 const hat = require('hat');
 const { Pool } = require('pg');
+const { Console } = require('console');
 
 const apiPort = 3000;
 
@@ -399,6 +400,7 @@ app.get('/getfiles', function (request, response)
 *********************************************************************/
 app.get('/getfile', function (request, response)
 {
+   Console.log("Get File Starting");
    try 
    {
       const queryObject = url.parse(request.url, true).query;
@@ -415,6 +417,7 @@ app.get('/getfile', function (request, response)
          {
             if (err)
             {
+               Console.log("GetFile Error pool error");
                response.send(500, "ERROR : Failed to a get file");
                return console.error('Error acquiring token client', err.stack);
             }
@@ -430,6 +433,7 @@ app.get('/getfile', function (request, response)
                   var queryFileList = "SELECT (path) FROM useruploadedfiles WHERE username = '" + user + "' AND id = " + id + ";";
                   client.query({ rowMode: 'array', text: queryFileList }, (err, result) =>
                   {
+                     // var getFileResult = 
                      console.log("GetFile result : " + result);
                   });
 
@@ -437,7 +441,7 @@ app.get('/getfile', function (request, response)
 
                }
                else
-               {
+               { 
                   Console.Log("GetFile : Bad Credentials")
                   response.status(203);
                   response.send("ERROR : BAD credentials");
