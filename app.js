@@ -441,13 +441,13 @@ app.get('/getfile', function (request, response)
 
                }
                else
-               { 
+               {
                   Console.Log("GetFile : Bad Credentials")
                   response.status(203);
                   response.send("ERROR : BAD credentials");
                   return;
                }
-            }
+            });
          });
       }
       else
