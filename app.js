@@ -443,8 +443,7 @@ app.get('/getfile', function (request, response)
                      var jsonResult = JSON.stringify(getFileResult);
                      var filePath = getFileResult.rows[0];
 
-                     console.log("GetFile row 0 : " + row);
-                     console.log("GetFile result : " + jsonResult);
+                     console.log("GetFile getting : " + filePath);
                      response.sendfile(filePath);
                   });
 
