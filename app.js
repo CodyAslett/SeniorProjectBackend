@@ -464,10 +464,10 @@ app.get('/getfile', function (request, response)
       response.send("ERROR : BAD FILE REQUEST");
    }
 
-   var testFile = "repo/torrents/cody/Rick Riordan - The Lightning Thief 1.mp3.torrent";
-   response.attachment(testFile);
-   console.log("GetFile default Respons : " + response.get('Content-Disposition'));
-   response.sendfile(testFile)
+   //var testFile = "repo/torrents/cody/Rick Riordan - The Lightning Thief 1.mp3.torrent";
+   //response.attachment(testFile);
+   //console.log("GetFile default Respons : " + response.get('Content-Disposition'));
+   //response.sendfile(testFile)
    //response.send("ACCEPTED");
 });
 
