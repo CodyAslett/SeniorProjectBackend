@@ -433,9 +433,19 @@ app.get('/getfile', function (request, response)
                   var queryFileList = "SELECT (path) FROM useruploadedfiles WHERE username = '" + user + "' AND id = " + fileId + ";";
                   client.query({ rowMode: 'array', text: queryFileList }, (err, getFileResult) =>
                   {
-                     var jsonResult = JSON.stringify(result);
-                        
+                     if (err)
+                     {
+                        console.log("GetFile Error pool error");
+                        response.send(500, "ERROR : Failed to a get file");
+                        return console.error('Error acquiring token client', err.stack);
+                     }
+
+                     var jsonResult = JSON.stringify(getFileResult);
+                     var row = getFileResult.rows[0];
+
+                     console.log("GetFile row 0 : " + row);
                      console.log("GetFile result : " + jsonResult);
+                     
                   });
 
 
