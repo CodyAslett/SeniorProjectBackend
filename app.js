@@ -176,6 +176,7 @@ app.get('/login', function (request, response)
                      else 
                      {
                         console.log(result.rows[0]['password'] + '!=' + pass);
+                        response.status(203);
                         response.send('DENIED : PROVIDED USERNAM AND PASSWORD DON\'t MATCH RECORDS');
                         return;
                      }
@@ -274,7 +275,8 @@ app.post('/addfile', function (request, response)
                         {
                            if (err)
                            {
-                              response.send(500, "ERROR : FAILED TO ADD FILE");
+                              response.status(500);
+                              response.send("ERROR : FAILED TO ADD FILE");
                               return console.error('AddFile : Error : executing insert', err.stack);
                            }
                            console.log("AddFile : uploaded file and will send ACCEPTED ");
@@ -397,6 +399,62 @@ app.get('/getfiles', function (request, response)
 *********************************************************************/
 app.get('/getfile', function (request, response)
 {
+   try 
+   {
+      const queryObject = url.parse(request.url, true).query;
+
+      if (queryObject["token"] !== undefined && queryObject["token"] !== null && queryObject["username"] !== undefined && queryObject["username"] !== null && queryObject["id"] !== undefined && queryObject["id"] !== null)
+      {
+         var user = JSON.stringify(queryObject["username"]).replace(/"/g, "");
+         var userGivenToken = JSON.stringify(queryObject["token"]).replace(/"/g, "");
+         var fileId = JSON.stringify(queryObject["id"]).replace(/"/g, "");
+
+         var query = "SELECT (username, token) FROM tokens WHERE token = '" + userGivenToken + "'";
+
+         pool.connect((err, client, release) =>
+         {
+            if (err)
+            {
+               response.send(500, "ERROR : Failed to a get file");
+               return console.error('Error acquiring token client', err.stack);
+            }
+            var tokenResult = ((result.rows[0]['row']).replace(/\)|\(/g, "")).split(',');
+            var dbToken = tokenResult[1];
+            var dbUser = tokenResult[0];
+
+            if (dbToken === userGivenToken && user === dbUser)
+            {
+               var queryFileList = "SELECT (path) FROM useruploadedfiles WHERE username = '" + user + "' AND id = " + id + ";";
+               client.query({ rowMode: 'array', text: queryFileList }, (err, result) =>
+               {
+                  console.log("GetFile result : " + result);
+               });
+
+
+
+            }
+            else
+            {
+               response.status(203);
+               response.send("ERROR : BAD credentials");
+               return;
+            }
+
+         });
+      }
+      else
+      {
+         response.status(400);
+         response.send("ERROR : BAD REQUEST");
+         return;
+      }
+   }
+   catch (err)
+   {
+      response.status(500);
+      response.send("ERROR : BAD FILE REQUEST");
+   }
+
    var testFile = "repo/torrents/cody/Rick Riordan - The Lightning Thief 1.mp3.torrent";
    response.attachment(testFile);
    console.log(response.get('Content-Disposition'));
