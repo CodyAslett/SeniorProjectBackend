@@ -436,7 +436,8 @@ app.get('/getfile', function (request, response)
                      if (err)
                      {
                         console.log("GetFile Error pool error");
-                        response.send(500, "ERROR : Failed to a get file");
+                        response.status(500);
+                        response.send("ERROR : Failed to a get file");
                         return console.error('Error getting file ', err.stack);
                      }
 
@@ -444,8 +445,9 @@ app.get('/getfile', function (request, response)
                      if (filePath === null || filePath === undefined)
                      {
                         console.log("GetFile no File found");
-                        response.send(404, "ERROR : Failed to a get file");
-                        return console.error('Error getting file ', err.stack);
+                        response.status(404);
+                        response.send("ERROR : Failed to a get file");
+                        return console.error('Error getting file ');
                      }
                      console.log("GetFile getting : " + filePath);
                      response.sendfile(filePath);
