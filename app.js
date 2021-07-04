@@ -437,18 +437,19 @@ app.get('/getfile', function (request, response)
                      {
                         console.log("GetFile Error pool error");
                         response.send(500, "ERROR : Failed to a get file");
-                        return console.error('Error acquiring token client', err.stack);
+                        return console.error('Error getting file ', err.stack);
                      }
 
-                     var jsonResult = JSON.stringify(getFileResult);
                      var filePath = getFileResult.rows[0];
-
+                     if (filePath === null || filePath === undefined)
+                     {
+                        console.log("GetFile no File found");
+                        response.send(404, "ERROR : Failed to a get file");
+                        return console.error('Error getting file ', err.stack);
+                     }
                      console.log("GetFile getting : " + filePath);
                      response.sendfile(filePath);
                   });
-
-
-
                }
                else
                {
