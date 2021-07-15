@@ -211,7 +211,7 @@ app.get('/login', function (request, response)
 
 
 /********************************************************************
- * Add File
+ * Add File : Username, Token, 
  * TODO : add checks to see if path already exists in the database 
  * TODO : setup bad request respons so doesn't hang
  ********************************************************************/
@@ -369,7 +369,7 @@ app.get('/getfiles', function (request, response)
                      }
 
                      console.log("GetFileList : sending : " + JSON.stringify(torrentFiles));
-                     response.send(200, "ACCEPTED : " + JSON.stringify(torrentFiles));
+                     response.status(200).send("ACCEPTED : " + JSON.stringify(torrentFiles));
                      return;
                   });
                }
