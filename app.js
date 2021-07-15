@@ -450,7 +450,7 @@ app.get('/getfile', function (request, response)
                         return console.error('Error getting file ');
                      }
                      console.log("GetFile getting : " + filePath);
-                     response.sendfile(filePath);
+                     response.sendFile(filePath);
                   });
                }
                else
