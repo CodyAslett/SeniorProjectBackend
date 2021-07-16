@@ -190,9 +190,9 @@ app.get('/login', function (request, response)
                   if (result.rows.length > 0)
                   {
 
-                     bcrypt.compare(pass, result.rows[0]['password'], response)
+                     bcrypt.compare(pass, result.rows[0]['password'], function(err, res) 
                      {
-                        if (response === true)
+                        if (res)
                         {
                            console.log('loginSucess for ' + user);
                            dbRequest = result.rows[0];
