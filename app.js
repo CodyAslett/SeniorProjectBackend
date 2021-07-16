@@ -76,7 +76,7 @@ app.get('/createaccount', function (request, response) {
       var plainTextPass = JSON.stringify(queryObject["password"]).replace(/"/g, "");
       var user = JSON.stringify(queryObject["username"]).replace(/"/g, "");
 
-      bcrypt.hash(planTextPass, 10, (err, pass) => {
+      bcrypt.hash(plainTextPass, 10, (err, pass) => {
          pool.connect((err, client, release) => {
             if (err) {
                response.status(500).send("ERROR : Failed to login");
