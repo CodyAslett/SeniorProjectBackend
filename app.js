@@ -190,10 +190,8 @@ app.get('/login', function (request, response)
                   if (result.rows.length > 0)
                   {
 
-                     bcrypt.compare(pass, result.rows[0]['password'], function(err, res) 
-                     {
-                        if (res)
-                        {
+                     bcrypt.compare(pass, result.rows[0]['password'], function (err, res) {
+                        if (res) {
                            console.log('loginSucess for ' + user);
                            dbRequest = result.rows[0];
                            var tokenPost = "INSERT INTO tokens(username, token, ip) VALUES ('" + user + "', '" + token + "', '" + ip.address() + "')";
@@ -212,7 +210,7 @@ app.get('/login', function (request, response)
                            response.send('DENIED : PROVIDED USERNAM AND PASSWORD DON\'t MATCH RECORDS');
                            return;
                         }
-                     }
+                     });
                   }
                   else
                   {
