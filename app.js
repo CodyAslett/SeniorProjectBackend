@@ -69,7 +69,7 @@ app.use(bodyParser.json());
 
 app.use(fileUpload({ createParentPath: true }));
 
-app.get('/createAccount', function (request, response) {
+app.get('/createaccount', function (request, response) {
    const queryObject = url.parse(request.url, true).query;
    var token = hat();
    if (queryObject["username"] !== undefined && queryObject["username"] !== null && queryObject["password"] !== undefined && queryObject["password"] !== null) {
@@ -82,7 +82,7 @@ app.get('/createAccount', function (request, response) {
             response.status(500).send("ERROR : Failed to login");
             return console.error('Error : acquiring db client', err.stack)
          }
-         var query = "INSERT INTO users (username, password) VALUES('" + user + "', '" + pass + "');";
+         var query = "INSERT INTO users (name, password) VALUES('" + user + "', '" + pass + "')";
          client.query(query, (err, result) => {
             if (err)
             {
