@@ -12,6 +12,7 @@ const ip = require('ip');
 const hat = require('hat');
 const { Pool } = require('pg');
 const { Console } = require('console');
+const bcrypt = require('bcrypt');
 
 const apiPort = 3000;
 
@@ -68,7 +69,37 @@ app.use(bodyParser.json());
 
 app.use(fileUpload({ createParentPath: true }));
 
+app.get('/createAccount', function (request, response) {
+   const queryObject = url.parse(request.url, true).query;
+   var token = hat();
+   if (queryObject["username"] !== undefined && queryObject["username"] !== null && queryObject["password"] !== undefined && queryObject["password"] !== null) {
+      var pass = JSON.stringify(queryObject["password"]).replace(/"/g, "");
+      var user = JSON.stringify(queryObject["username"]).replace(/"/g, "");
 
+      pool.connect((err, client, release) => {
+         if (err)
+         {
+            response.status(500).send("ERROR : Failed to login");
+            return console.error('Error : acquiring db client', err.stack)
+         }
+         var query = "INSERT INTO users (username, password) VALUES('" + user + "', '" + pass + "');";
+         client.query(query, (err, result) => {
+            if (err)
+            {
+               response.status(500).send("Error : Failed to add user");
+               return console.error('Error inserting user', err.stack);
+            }
+            response.status(200).send("ACCEPTED : ADDED USER");
+            return;
+         });
+      });
+   }
+   else
+   {
+      response.status(200).send("ERROR : Creating Account Failed");
+      return;
+   }
+});
 
 /********************************************************************
  * Login
@@ -158,28 +189,29 @@ app.get('/login', function (request, response)
                   console.log('Result ' + JSON.stringify(result));
                   if (result.rows.length > 0)
                   {
-                     if (pass === result.rows[0]['password'])
+
+                     bcrypt.compare(pass, result.rows[0]['password'], response)
                      {
-                        console.log('loginSucess for ' + user);
-                        dbRequest = result.rows[0];
-                        var tokenPost = "INSERT INTO tokens(username, token, ip) VALUES ('" + user + "', '" + token + "', '" + ip.address() + "')";
-                        console.log('sending ' + tokenPost);
-                        client.query(tokenPost, (err, resultToken) => 
+                        if (response === true)
                         {
-                           release();
-                           if (err) 
-                           {
-                              return console.error('Error executing query', err.stack);
-                           }
-                           console.log("sent tokent to db");
-                        });
-                     }
-                     else 
-                     {
-                        console.log(result.rows[0]['password'] + '!=' + pass);
-                        response.status(203);
-                        response.send('DENIED : PROVIDED USERNAM AND PASSWORD DON\'t MATCH RECORDS');
-                        return;
+                           console.log('loginSucess for ' + user);
+                           dbRequest = result.rows[0];
+                           var tokenPost = "INSERT INTO tokens(username, token, ip) VALUES ('" + user + "', '" + token + "', '" + ip.address() + "')";
+                           console.log('sending ' + tokenPost);
+                           client.query(tokenPost, (err, resultToken) => {
+                              release();
+                              if (err) {
+                                 return console.error('Error executing query', err.stack);
+                              }
+                              console.log("sent tokent to db");
+                           });
+                        }
+                        else {
+                           console.log(result.rows[0]['password'] + '!=' + pass);
+                           response.status(203);
+                           response.send('DENIED : PROVIDED USERNAM AND PASSWORD DON\'t MATCH RECORDS');
+                           return;
+                        }
                      }
                   }
                   else
@@ -477,11 +509,9 @@ app.get('/getfile', function (request, response)
       response.send("ERROR : BAD FILE REQUEST");
    }
 
-   //var testFile = "repo/torrents/cody/Rick Riordan - The Lightning Thief 1.mp3.torrent";
-   //response.attachment(testFile);
-   //console.log("GetFile default Respons : " + response.get('Content-Disposition'));
-   //response.sendfile(testFile)
-   //response.send("ACCEPTED");
+   response.status(500);
+   response.send("ERROR : BAD FILE REQUEST");
+
 });
 
 
