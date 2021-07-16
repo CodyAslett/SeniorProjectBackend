@@ -73,24 +73,24 @@ app.get('/createaccount', function (request, response) {
    const queryObject = url.parse(request.url, true).query;
    var token = hat();
    if (queryObject["username"] !== undefined && queryObject["username"] !== null && queryObject["password"] !== undefined && queryObject["password"] !== null) {
-      var pass = JSON.stringify(queryObject["password"]).replace(/"/g, "");
+      var plainTextPass = JSON.stringify(queryObject["password"]).replace(/"/g, "");
       var user = JSON.stringify(queryObject["username"]).replace(/"/g, "");
 
-      pool.connect((err, client, release) => {
-         if (err)
-         {
-            response.status(500).send("ERROR : Failed to login");
-            return console.error('Error : acquiring db client', err.stack)
-         }
-         var query = "INSERT INTO users (name, password) VALUES('" + user + "', '" + pass + "')";
-         client.query(query, (err, result) => {
-            if (err)
-            {
-               response.status(500).send("Error : Failed to add user");
-               return console.error('Error inserting user', err.stack);
+      bcrypt.hash(planTextPass, 10, (err, pass) => {
+         pool.connect((err, client, release) => {
+            if (err) {
+               response.status(500).send("ERROR : Failed to login");
+               return console.error('Error : acquiring db client', err.stack)
             }
-            response.status(200).send("ACCEPTED : ADDED USER");
-            return;
+            var query = "INSERT INTO users (name, password) VALUES('" + user + "', '" + pass + "')";
+            client.query(query, (err, result) => {
+               if (err) {
+                  response.status(500).send("Error : Failed to add user");
+                  return console.error('Error inserting user', err.stack);
+               }
+               response.status(200).send("ACCEPTED : ADDED USER");
+               return;
+            });
          });
       });
    }
